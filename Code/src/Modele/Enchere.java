@@ -5,7 +5,7 @@
 public class Enchere {
 
     private int identifiant;
-    private Double prix;
+    private double prix;
     private Utilisateur utilisateur;
     private Vente vente;
     private Objet objet;
