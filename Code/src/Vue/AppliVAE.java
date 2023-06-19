@@ -6,6 +6,7 @@ import Controller.ControllerBtnConnexion;
 import Controller.ControllerBtnCreerCompte;
 import Controller.ControllerBtnDeconnexion;
 import Controller.ControllerBtnDeleteUser;
+import Controller.ControllerBtnEditUser;
 import Controller.ControllerBtnFullscreen;
 import Controller.ControllerBtnMenuAdmin;
 import Controller.ControllerEnterCreerCompte;
@@ -13,7 +14,9 @@ import Controller.ControllerLienInscription;
 import Controller.ControllerRechecherUsers;
 import Controller.ControllerRetour;
 import Controller.ControllerRetourAdmin;
+import Modele.GestionVentes;
 import Modele.Utilisateur;
+import Modele.Vente;
 import Vue.Administration.FenetreAdmin;
 import Vue.Administration.FenetreGestionContrats;
 import Vue.Administration.FenetreGestionEntreprise;
@@ -31,6 +34,7 @@ import Modele.BD.InscriptionUtilisateur;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 // autres imports
@@ -38,12 +42,14 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
@@ -52,7 +58,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -92,6 +100,13 @@ public class AppliVAE extends Application {
     private Button btnDeleteUser;
     private ObservableList<Utilisateur> listUtilisateursRecherchés;
     private Utilisateur dernierUserSelected;
+    private Button btnEdit;
+
+    // edit users
+    private TextField tfEditID;
+    private TextField tfEditUsername;
+    private TextField tfEditEmail;
+    private ComboBox<String> cbEditRole;
 
     // Gestion Entreprise
     private Label lbNbTotUsers;
@@ -99,9 +114,23 @@ public class AppliVAE extends Application {
     private Label lbNbUsersInactif;
 
     // Gestion Ventes
+    private List<Vente> listVentes;
     private Label lbNbTotVentes;
     private Label lbNbVentesValidée;
     private Label lbNbVentesNonConclus;
+
+    private Button btnSearchVente;
+    private Button btnRefreshVente;
+    private TextField tfSearchVente;
+    private TableView<Vente> tableVentes;
+    private Button btnDeleteVente;
+    private ObservableList<Vente> listVentesRecherchees;
+    private Vente derniereVenteSelected;
+    private Button btnEditVente;
+
+    private GestionVentes gestionVentes;
+
+    //
 
     private AppliVAE appliVAE;
     
@@ -163,8 +192,9 @@ public class AppliVAE extends Application {
         this.appliVAE = new AppliVAE();
         this.utilisateur = new Utilisateur();
         this.connexionUtilisateur = new ConnexionUtilisateur(utilisateur, getConnection());
-        this.inscriptionUtilisateur = new InscriptionUtilisateur(utilisateur, getConnection());
+        this.inscriptionUtilisateur = new InscriptionUtilisateur(utilisateur);
         this.gestionUsers = new GestionUtilisateurs(getConnection());
+        this.gestionVentes= new GestionVentes();
 
         //fenetre Connexion
 
@@ -200,7 +230,7 @@ public class AppliVAE extends Application {
         this.btnRetour.setOnAction(new ControllerRetour(this));
 
         this.btnCreerCompte = new Button("CRÉER UN COMPTE"); // fini de remplir le formulaire d'inscription
-        this.btnCreerCompte.setOnAction(new ControllerBtnCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur));
+        this.btnCreerCompte.setOnAction(new ControllerBtnCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur,this.gestionUsers));
 
         //fenetre Accueil
         this.btnDeconnexion = new Button("DÉCONNEXION");
@@ -242,6 +272,13 @@ public class AppliVAE extends Application {
         this.table.setOnMouseClicked(new ControllerLastUserSelected(this, table));
         this.btnDeleteUser = new Button("Supprimer l'utilisateur");
         this.btnDeleteUser.setOnAction(new ControllerBtnDeleteUser(this, gestionUsers));
+        this.btnEdit = new Button("Modifier l'utilisateur");
+        this.btnEdit.setOnAction(new ControllerBtnEditUser(this, gestionUsers));
+
+        this.tfEditID = new TextField();
+        this.tfEditUsername = new TextField();
+        this.tfEditEmail = new TextField();
+        this.cbEditRole = new ComboBox<>();
         
         // fenêtre Gestion Entreprise
         this.lbNbTotUsers = new Label("10");
@@ -251,7 +288,26 @@ public class AppliVAE extends Application {
         // fenêtre Gestion Ventes
         this.lbNbTotVentes = new Label("10");
         this.lbNbVentesValidée = new Label("8");
-        this.lbNbVentesNonConclus = new Label("2"); 
+        this.lbNbVentesNonConclus = new Label("2");
+
+        this.btnSearchVente = new Button("OK");
+        this.btnRefreshVente = new Button("Actualiser");
+        this.listVentesRecherchees = FXCollections.observableArrayList();
+        this.btnSearchVente.setOnAction(new ControllerRechecherUsers(this,this.gestionUsers,this.listUtilisateursRecherchés));
+        this.btnRefreshVente.setOnAction(new ControllerRechecherUsers(this,this.gestionUsers,this.listUtilisateursRecherchés));
+        this.tfSearchVente = new TextField("");
+        this.tfSearchVente.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers));
+        this.tableVentes = new TableView<>();
+        this.tableVentes.setOnMouseClicked(new ControllerLastUserSelected(this, table));
+        this.btnDeleteVente = new Button("Supprimer l'utilisateur");
+        this.btnDeleteVente.setOnAction(new ControllerBtnDeleteUser(this, gestionUsers));
+        this.btnEditVente = new Button("Modifier l'utilisateur");
+        this.btnEditVente.setOnAction(new ControllerBtnEditUser(this, gestionUsers));
+
+        // this.tfEditID = new TextField();
+        // this.tfEditUsername = new TextField();
+        // this.tfEditEmail = new TextField();
+        // this.cbEditRole = new ComboBox<>();
     }
 
         @Override
@@ -260,7 +316,13 @@ public class AppliVAE extends Application {
             this.btnFullscreen.setOnAction(new ControllerBtnFullscreen(this.stage));
             // Création de la première fenêtre de connexion
             // Pane root = new FenetreConnexion(this.btnConnexion, this.btnQuitter, this.btnLienInscription, this.username, this.password,this.passwordMontrer,this.showPassword,this.btnFullscreen);
-            Pane root = new FenetreGestionVentes(this.btnDeconnexion,this.btnRetourAdmin,this.lbNbTotVentes,this.lbNbVentesValidée,this.lbNbVentesNonConclus);
+            
+            TableColumn<Utilisateur, Boolean> isActifCol = new TableColumn<>("Actif");
+            isActifCol.setPrefWidth(80);
+            isActifCol.setCellValueFactory(new PropertyValueFactory<>("actif"));
+            setTableButtonAction(isActifCol);
+
+            Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh,this.btnEdit);
             this.scene = new Scene(root, 1080, 720);
             this.scene.getStylesheets().add("file:./ressources/css/styles.css");
             this.stage.setScene(scene);
@@ -313,9 +375,9 @@ public class AppliVAE extends Application {
             this.confirmPassword = new PasswordField();
             this.confirmPassword.setPromptText("Valider votre mot de passe");
 
-            this.username2.setOnKeyReleased(new ControllerEnterCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur));
-            this.password2.setOnKeyReleased(new ControllerEnterCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur));
-            this.confirmPassword.setOnKeyReleased(new ControllerEnterCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur));
+            this.username2.setOnKeyReleased(new ControllerEnterCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur,this.gestionUsers));
+            this.password2.setOnKeyReleased(new ControllerEnterCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur,this.gestionUsers));
+            this.confirmPassword.setOnKeyReleased(new ControllerEnterCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur,this.gestionUsers));
 
             Pane root = new FenetreInscription(this.btnRetour, this.btnCreerCompte, this.username2,this.email,this.password2, this.confirmPassword,this.btnQuitter);
             this.scene.setRoot(root);
@@ -346,13 +408,15 @@ public class AppliVAE extends Application {
             this.tfSearch = new TextField("");
             this.tfSearch.setPromptText("Rechercher :");
             this.tfSearch.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers));
+            this.btnEdit = new Button("Modifier");
+            this.btnEdit.setOnAction(new ControllerBtnEditUser(this,this.gestionUsers));
 
             TableColumn<Utilisateur, Boolean> isActifCol = new TableColumn<>("Actif");
             isActifCol.setPrefWidth(80);
             isActifCol.setCellValueFactory(new PropertyValueFactory<>("actif"));
             setTableButtonAction(isActifCol);
             
-            Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh);
+            Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh,this.btnEdit);
             this.scene.setRoot(root);
         }
 
@@ -362,7 +426,21 @@ public class AppliVAE extends Application {
         }
 
         public void afficheFenetreGestionVentes() {
-            Pane root = new FenetreGestionVentes(this.btnDeconnexion,this.btnRetourAdmin,this.lbNbTotVentes,this.lbNbVentesValidée,this.lbNbVentesNonConclus);
+            this.btnDeleteVente = new Button("Supprimer l'utilisateur");
+            this.btnDeleteVente.setOnAction(new ControllerBtnDeleteUser(this, gestionUsers));
+            this.tableVentes = new TableView<>();
+            this.tableVentes.setOnMouseClicked(new ControllerLastUserSelected(this, table));
+            this.tfSearchVente = new TextField("");
+            this.tfSearchVente.setPromptText("Rechercher :");
+            this.tfSearchVente.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers));
+            this.btnEditVente = new Button("Modifier");
+            this.btnEditVente.setOnAction(new ControllerBtnEditUser(this,this.gestionUsers));
+
+            TableColumn<Vente, Boolean> isActifColVente = new TableColumn<>("Actif");
+            isActifColVente.setPrefWidth(80);
+            isActifColVente.setCellValueFactory(new PropertyValueFactory<>("actif"));
+            
+            Pane root = new FenetreGestionVentes(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearchVente,this.btnSearchVente,this.tableVentes,this.gestionVentes,isActifColVente,this.btnDeleteVente,this.btnRefreshVente,this.btnEditVente);
             this.scene.setRoot(root);
         }
 
@@ -379,6 +457,114 @@ public class AppliVAE extends Application {
         public void afficheFenetreGestionParametres() {
             Pane root = new FenetreGestionParametres(this.btnDeconnexion,this.btnRetourAdmin);
             this.scene.setRoot(root);
+        }
+
+        public boolean afficherPopUpSupprimerUser(Utilisateur userSelected){
+            // Afficher une alerte de confirmation
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initOwner(stage);
+            alert.setTitle("Gestion Users");
+            alert.setHeaderText("Êtes-vous sûr de vouloir supprimé le compte de l'utilisateur ? (cela supprimera aussi toutes ces enchères et ces ventes d'objets)");
+            VBox infoUsers = new VBox();
+            infoUsers.setPadding(new Insets(10, 10, 10, 10));
+
+            if(userSelected!=null){
+                Label id = new Label("ID : " + userSelected.getId());
+                Label username = new Label("Username : " + userSelected.getUsername());
+                Label email = new Label("Email : " + userSelected.getEmail());
+                Label role = new Label("Role : " + userSelected.getNomRole());
+
+                infoUsers.getChildren().addAll(id, username, email, role);
+                alert.getDialogPane().setContent(infoUsers);
+            }
+
+            Optional<ButtonType> result = alert.showAndWait();
+    
+            // Vérifier si l'utilisateur a cliqué sur le bouton OK
+            return result.isPresent() && result.get() == ButtonType.OK;
+        }
+
+        public boolean afficheFenetreEditUser(Utilisateur userSelected) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initOwner(stage);
+            alert.setTitle("Gestion Users");
+
+            VBox infoUsers = new VBox();
+            infoUsers.setPadding(new Insets(10, 10, 10, 10));
+
+            if(userSelected!=null){
+                Label id = new Label("ID : " + userSelected.getId());
+                Label username = new Label("Username : " + userSelected.getUsername());
+                Label email = new Label("Email : " + userSelected.getEmail());
+                Label role = new Label("Role : " + userSelected.getNomRole());
+
+                infoUsers.getChildren().addAll(id, username, email, role);
+            } else{
+                infoUsers.getChildren().addAll(new Label("Aucun utilisateur selectionné"));
+            }
+
+            
+
+            alert.getDialogPane().setHeader(infoUsers);
+
+            // textField pour changer l'id
+            this.tfEditID = new TextField();
+            this.tfEditID.setPromptText("Nouvel ID");
+
+            // textField pour changer l'username
+            this.tfEditUsername = new TextField();
+            this.tfEditUsername.setPromptText("Nouvel username");
+
+            // textField pour changer l'email
+            this.tfEditEmail = new TextField();
+            this.tfEditEmail.setPromptText("Nouvel email");
+
+            // ComboBox pour le changement de role
+            this.cbEditRole = new ComboBox<>();
+            this.cbEditRole.getItems().addAll("Administrateur", "Utilisateur");
+            if(userSelected.getNomRole().equals("Administrateur"))
+                this.cbEditRole.setValue("Administrateur");
+            else{
+                this.cbEditRole.setValue("Utilisateur");
+            }
+
+            // ajouter la combobox a la fenetre de dialogue
+            GridPane grid = new GridPane();
+            grid.setVgap(10);
+            grid.setHgap(10);
+            grid.add(new Label("Nouvel ID :"), 0, 0);
+            grid.add(this.tfEditID, 1, 0);
+            grid.add(new Label("Nouvel username :"), 0, 1);
+            grid.add(this.tfEditUsername, 1, 1);
+            grid.add(new Label("Nouvel email :"), 0, 2);
+            grid.add(this.tfEditEmail, 1, 2);
+            grid.add(new Label("Nouveau role :"), 0, 3);
+            grid.add(this.cbEditRole, 1, 3);
+
+            alert.getDialogPane().setContent(grid);
+        
+            // Obtenir la réponse de l'utilisateur
+            Optional<ButtonType> result = alert.showAndWait();
+        
+            // Vérifier si l'utilisateur a cliqué sur le bouton OK
+            return result.isPresent() && result.get() == ButtonType.OK;
+
+        }
+
+        public String getEditID(){
+            return this.tfEditID.getText().toString();
+        }
+
+        public String getEditUsername(){
+            return this.tfEditUsername.getText().toString();
+        }
+
+        public String getEditEmail(){
+            return this.tfEditEmail.getText().toString();
+        }
+
+        public String getEditRole(){
+            return this.cbEditRole.getValue().toString();
         }
 
         // fenêtre Connexion
@@ -490,4 +676,6 @@ public class AppliVAE extends Application {
             // Fermeture de l'application
             Platform.exit();
         }
+
+        
 }

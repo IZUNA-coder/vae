@@ -31,6 +31,7 @@ public class ControllerRechecherUsers implements EventHandler<ActionEvent>{
             for (Utilisateur user : this.gestionUsers.listeDesUtilisateurs(this.appli.getSearch())) {
                 this.listUtilisateurs.add(user);
             }
+            
             this.appli.setUtilisateursTable(this.listUtilisateurs);
         } catch (SQLException e) {
             e.printStackTrace();

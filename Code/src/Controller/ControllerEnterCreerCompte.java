@@ -1,5 +1,6 @@
 package Controller;
 
+import Modele.BD.GestionUtilisateurs;
 import Modele.BD.InscriptionUtilisateur;
 import Modele.Utilisateur;
 import Vue.AppliVAE;
@@ -13,11 +14,13 @@ public class ControllerEnterCreerCompte implements EventHandler<KeyEvent>{
     private AppliVAE appli;
     private InscriptionUtilisateur inscriptionUtilisateur;
     private Utilisateur user;
+    private GestionUtilisateurs gestionUtilisateurs;
     
-    public ControllerEnterCreerCompte(AppliVAE appli,InscriptionUtilisateur inscriptionUtilisateur,Utilisateur user){
+    public ControllerEnterCreerCompte(AppliVAE appli,InscriptionUtilisateur inscriptionUtilisateur,Utilisateur user,GestionUtilisateurs gestionUtilisateurs){
         this.appli = appli;
         this.inscriptionUtilisateur = inscriptionUtilisateur;
         this.user = user;
+        this.gestionUtilisateurs = gestionUtilisateurs;
     }
     
     @Override
@@ -45,8 +48,8 @@ public class ControllerEnterCreerCompte implements EventHandler<KeyEvent>{
                 if(!inscriptionUtilisateur.checkDonnéeVide()){
                     if(inscriptionUtilisateur.checkEmail()){
                         if(inscriptionUtilisateur.checkPassword()){
-                            if(!inscriptionUtilisateur.checkExistingUsername()){
-                                if(inscriptionUtilisateur.ajouterUtilisateur()){
+                            if(!gestionUtilisateurs.checkExistingUsername(username)){
+                                if(gestionUtilisateurs.ajouterUtilisateur(user)){
                                     System.out.println("Inscription réussie");
                                     this.appli.afficherPopUpErreur(false,"Inscription réussie", "Inscription réussie", "Vous pouvez maintenant vous connecter.");
                                     this.appli.afficheFenetreConnexion();

@@ -14,11 +14,21 @@ public class Role {
         this.idRole=id;
         this.nomRole=getNomRole(id);
     }
+
+    public Role(String nomRole){
+        this.idRole=getIdRole(nomRole);
+        this.nomRole=nomRole;
+    }
     //
 
     //getters
     public int getIdRole(){
         return this.idRole;
+    }
+
+    public int getIdRole(String nomRole){
+        if(nomRole.equals("Administrateur")){return 1;}
+        else{return 2;}
     }
 
     public String getNomRole(){
@@ -30,6 +40,7 @@ public class Role {
             return "Administrateur";
         } else{return "Utilisateur";}
     }
+    
     //
 
     //setters

@@ -44,7 +44,7 @@
     -fx-pref-width: 100px;
 }
 
-#btnCreerCompte,#btnConnexion,#search,#btnDeleteUser,#btnRefresh{
+#btnCreerCompte,#btnConnexion,#search,#btnDeleteUser,#btnRefresh,#btnEdit{
     -fx-background-radius: 3em;
     -fx-background-color:#51D1E6;
     -fx-text-fill: white;
@@ -52,7 +52,7 @@
     -fx-pref-width: 250px;
 }
 
-#btnConnexion:hover,#btnInscrire:hover,#btnCreerCompte:hover,#search:hover,#btnDeleteUser:hover,#btnRefresh:hover{
+#btnConnexion:hover,#btnInscrire:hover,#btnCreerCompte:hover,#search:hover,#btnDeleteUser:hover,#btnRefresh:hover,#btnEdit:hover{
     -fx-border-radius: 3em;
     -fx-background-color:#FFFFFF;
     -fx-border-color: #51D1E6;
@@ -111,23 +111,21 @@
 }
 
 #fenetreAdmin Button {
-    -fx-pref-width: 20em;
-    -fx-pref-height: 15em;
+    -fx-pref-width: 22em;
+    -fx-pref-height: 12em;
     -fx-font-size: 2em;
     -fx-background-radius: 1em;
-    -fx-background-color:#51D1E6;
-    -fx-text-fill: white;
-    
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0, 0, 0);
 }
 
 #fenetreAdmin Button:hover {
-    
-    -fx-border-radius: 1em;
-    -fx-background-color:transparent;
-    -fx-border-color: #51D1E6;
-    -fx-text-fill: #51D1E6;
-    
+    -fx-background-color: #51D1E6;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0, 0, 0);
 }
+
 
 #btnDeconnexion:hover{
     -fx-border-radius: 3em;

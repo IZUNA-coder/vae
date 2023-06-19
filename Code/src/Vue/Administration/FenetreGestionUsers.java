@@ -31,11 +31,12 @@ public class FenetreGestionUsers extends BorderPane {
     private TextField tfSearch;
     private Button btnSearch;
     private Button btnRefresh;
+    private Button btnEdit;
     private TableView<Utilisateur> table;
     private TableColumn<Utilisateur, Boolean> isActifCol;
     private Button btnDeleteUser;
     
-    public FenetreGestionUsers(Button boutonDeco, Button btnRetourAdmin,TextField tfSearch,Button btnSearch,TableView<Utilisateur> table,GestionUtilisateurs gestionUtilisateurs,TableColumn<Utilisateur, Boolean> isActifCol,Button btnDeleteUser,Button btnRefresh){
+    public FenetreGestionUsers(Button boutonDeco, Button btnRetourAdmin,TextField tfSearch,Button btnSearch,TableView<Utilisateur> table,GestionUtilisateurs gestionUtilisateurs,TableColumn<Utilisateur, Boolean> isActifCol,Button btnDeleteUser,Button btnRefresh,Button btnEdit){
         super();
         this.btnDeconnexion = boutonDeco;
         this.btnRetourAdmin = btnRetourAdmin;
@@ -45,17 +46,20 @@ public class FenetreGestionUsers extends BorderPane {
         this.isActifCol=isActifCol;
         this.btnDeleteUser=btnDeleteUser;
         this.btnRefresh=btnRefresh;
+        this.btnEdit=btnEdit;
 
         this.btnRetourAdmin.setId("btnRetourAdmin");
         this.btnDeleteUser.setId("btnDeleteUser");
         this.btnRefresh.setId("btnRefresh");
         this.btnSearch.setId("search");
+        this.btnEdit.setId("btnEdit");
 
         this.btnRetourAdmin.setCursor(Cursor.HAND);
         this.btnDeleteUser.setCursor(Cursor.HAND);
         this.btnRefresh.setCursor(Cursor.HAND);
         this.btnSearch.setCursor(Cursor.HAND);
-        
+        this.btnEdit.setCursor(Cursor.HAND);
+
         this.setTop(this.enHaut());     
         this.setCenter(this.center());
     }
@@ -141,7 +145,7 @@ public class FenetreGestionUsers extends BorderPane {
         BorderPane.setMargin(table, new Insets(10, 10, 10, 10));
 
         menu.getChildren().addAll(this.tfSearch, this.btnSearch);
-        boxButtons.getChildren().addAll(this.btnRefresh, this.btnDeleteUser);
+        boxButtons.getChildren().addAll(this.btnRefresh, this.btnDeleteUser,this.btnEdit);
         center.setTop(menu);
         center.setCenter(this.table);
         center.setBottom(this.btnRetourAdmin);

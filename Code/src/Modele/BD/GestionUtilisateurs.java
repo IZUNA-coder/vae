@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
+import Modele.Role;
 import Modele.Utilisateur;
 
 public class GestionUtilisateurs {
@@ -38,11 +40,63 @@ public class GestionUtilisateurs {
         return liste;
     }
 
+    public boolean ajouterUtilisateur(Utilisateur user) {
+        // Ajouter l'utilisateur dans la base de données
+        // Utilisez votre logique de requête SQL pour effectuer l'insertion
+        // Retournez true si l'insertion est réussie, sinon retournez false
+    
+        if (this.connection == null) {
+            System.out.println("La connexion à la base de données n'est pas établie");
+            return false;
+        }
+    
+        String query = "INSERT INTO UTILISATEUR (idut, pseudout, emailut, mdput, activeut, idrole) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Récupérer l'ID maximum et ajouter 1
+            int idut = 0;
+            String getMaxIdQuery = "SELECT MAX(idut) FROM UTILISATEUR";
+            try (Statement maxIdStatement = connection.createStatement();
+                 ResultSet resultSet = maxIdStatement.executeQuery(getMaxIdQuery)) {
+                if (resultSet.next()) {
+                    int maxId = resultSet.getInt(1);
+                    idut = maxId + 1;
+                }
+            }
+
+            String activeUt = "O";
+            int idRole = 2;
+    
+            statement.setInt(1, idut);
+            statement.setString(2, String.valueOf(user.getUsername()));
+            statement.setString(3, String.valueOf(user.getEmail()));
+            statement.setString(4, String.valueOf(user.getPassword()));
+            statement.setString(5, activeUt);
+            statement.setInt(6, idRole);
+            
+    
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Inscription réussie");
+                // Gérer la réussite de l'inscription ici (par exemple, afficher un message de succès à l'utilisateur)
+                return true;
+            } else {
+                System.out.println("Erreur lors de l'inscription");
+                // Gérer l'échec de l'inscription ici
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gérer les erreurs de requête ici
+        }
+        return false;
+    }
+
     public void supprimeUtilisateur(int idUt) {
         try {
             // 1. Supprimer toutes les enchères où l'utilisateur a enchéri
             PreparedStatement statement1 = this.connection.prepareStatement(
-                    "DELETE FROM encherir WHERE idut = ?"
+                    "DELETE FROM ENCHERIR WHERE idut = ?"
             );
             statement1.setInt(1, idUt);
             statement1.executeUpdate();
@@ -50,7 +104,7 @@ public class GestionUtilisateurs {
     
             // 2. Supprimer les enchères sur les ventes où l'objet appartient à l'utilisateur
             PreparedStatement statement2 = this.connection.prepareStatement(
-                    "DELETE FROM encherir WHERE idve IN (SELECT idve FROM VENTE WHERE idob IN (SELECT idob FROM OBJET WHERE idut = ?))"
+                    "DELETE FROM ENCHERIR WHERE idve IN (SELECT idve FROM VENTE WHERE idob IN (SELECT idob FROM OBJET WHERE idut = ?))"
             );
             statement2.setInt(1, idUt);
             statement2.executeUpdate();
@@ -86,13 +140,10 @@ public class GestionUtilisateurs {
     }    
 
     public void updateActifValue(int utilisateurId, boolean newActifValue) {
-        // Utilisez votre logique d'accès aux données pour mettre à jour la valeur dans la base de données
-        // Vous pouvez utiliser des requêtes SQL, des appels de méthode à votre couche d'accès aux données, etc.
-        // Exemple de code fictif :
+        // mettre à jour la valeur dans la base de données
         try {
             // Connexion à la base de données
             // Exécution de la requête de mise à jour
-            // Exemple de requête fictive :
             String updateQuery = "UPDATE UTILISATEUR SET activeut = ? WHERE idut = ?";
             PreparedStatement statement = connection.prepareStatement(updateQuery);
             statement.setString(1, newActifValue ? "O" : "N");
@@ -103,6 +154,97 @@ public class GestionUtilisateurs {
             e.printStackTrace();
             // Gestion des erreurs
         }
+    }
+
+    public boolean checkExistingUsername(String username) {
+        // Vérifier si l'identifiant existe déjà dans la base de données
+        // Utilisez votre logique de requête SQL pour effectuer la vérification
+        // Retournez true si l'identifiant existe déjà, sinon retournez false
+        System.out.println("Check existing username");
+
+        if (this.connection == null) {
+            System.out.println("La connexion à la base de données n'est pas établie");
+            return false;
+        }
+    
+        String query = "SELECT COUNT(*) FROM UTILISATEUR WHERE pseudout = ?";
+    
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, username);
+    
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gérer les erreurs de requête ici
+        }
+    
+        return false;
+    }
+
+    public boolean checkExistingID(int idUser) {
+        // Vérifier si l'identifiant existe déjà dans la base de données
+        // Utilisez votre logique de requête SQL pour effectuer la vérification
+        // Retournez true si l'identifiant existe déjà, sinon retournez false
+        System.out.println("Check existing ID");
+
+        if (this.connection == null) {
+            System.out.println("La connexion à la base de données n'est pas établie");
+            return false;
+        }
+    
+        String query = "SELECT COUNT(*) FROM UTILISATEUR WHERE idut = ?";
+    
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, idUser);
+    
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gérer les erreurs de requête ici
+        }
+    
+        return false;
+    }
+
+    public boolean checkExistingEmail(String email) {
+        // Vérifier si l'identifiant existe déjà dans la base de données
+        // Utilisez votre logique de requête SQL pour effectuer la vérification
+        // Retournez true si l'identifiant existe déjà, sinon retournez false
+        System.out.println("Check existing email");
+        System.out.println(email);
+    
+        if (this.connection == null) {
+            System.out.println("La connexion à la base de données n'est pas établie");
+            return false;
+        }
+    
+        String query = "SELECT COUNT(*) FROM UTILISATEUR WHERE emailUT = ?";
+    
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+    
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gérer les erreurs de requête ici
+        }
+    
+        return false;
     }
 
     public int getNbTotUsers() {
@@ -147,46 +289,68 @@ public class GestionUtilisateurs {
         return res;
     }
 
-    public int getNbTotVentes() {
-        int res=0;
-        String query = "SELECT count(idve) FROM VENTE";
-        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
-            ResultSet r = statement.executeQuery();
-            r.next();
-            res = r.getInt(1);
+    public void editUsername(int idUser,String newUsername){
+        try {
+            // Connexion à la base de données
+            // Exécution de la requête de mise à jour
+            String updateQuery = "UPDATE UTILISATEUR SET pseudoUt = ? WHERE idUt = ?";
+            PreparedStatement statement = connection.prepareStatement(updateQuery);
+            statement.setString(1, newUsername);
+            statement.setInt(2, idUser);
+            statement.executeUpdate();
+            // Fermeture de la connexion et des ressources
         } catch (SQLException e) {
             e.printStackTrace();
-            // Gérer les erreurs de requête ici
+            // Gestion des erreurs
         }
-        return res;
     }
 
-    public int getNbVentesValidee() {
-        int res=0;
-        String query = "SELECT count(idve) FROM VENTE NATURAL JOIN STATUT WHERE nomst='Validée'";
-        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
-            ResultSet r = statement.executeQuery();
-            r.next();
-            res = r.getInt(1);
+    public void editEmail(int idUser,String newEmail){
+        try {
+            // Connexion à la base de données
+            // Exécution de la requête de mise à jour
+            String updateQuery = "UPDATE UTILISATEUR SET emailut = ? WHERE idut = ?";
+            PreparedStatement statement = connection.prepareStatement(updateQuery);
+            statement.setString(1, newEmail);
+            statement.setInt(2, idUser);
+            statement.executeUpdate();
+            // Fermeture de la connexion et des ressources
         } catch (SQLException e) {
             e.printStackTrace();
-            // Gérer les erreurs de requête ici
+            // Gestion des erreurs
         }
-        return res;
     }
 
-    public int getNbVentesNonConclus() {
-        int res=0;
-        String query = "SELECT count(idve) FROM VENTE NATURAL JOIN STATUT WHERE nomst='Non conclue'";
-        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
-            ResultSet r = statement.executeQuery();
-            r.next();
-            res = r.getInt(1);
+    public void editId(int idUser,String newId){
+        try {
+            // Connexion à la base de données
+            // Exécution de la requête de mise à jour
+            String updateQuery = "UPDATE UTILISATEUR SET idut = ? WHERE idut = ?";
+            PreparedStatement statement = connection.prepareStatement(updateQuery);
+            statement.setString(1, newId);
+            statement.setInt(2, idUser);
+            statement.executeUpdate();
+            // Fermeture de la connexion et des ressources
         } catch (SQLException e) {
             e.printStackTrace();
-            // Gérer les erreurs de requête ici
+            // Gestion des erreurs
         }
-        return res;
+    }
+
+    public void editRole(int idUser,Role newRole){
+        try {
+            // Connexion à la base de données
+            // Exécution de la requête de mise à jour
+            String updateQuery = "UPDATE UTILISATEUR SET idRole = ? WHERE idut = ?";
+            PreparedStatement statement = connection.prepareStatement(updateQuery);
+            statement.setInt(1, newRole.getIdRole());
+            statement.setInt(2, idUser);
+            statement.executeUpdate();
+            // Fermeture de la connexion et des ressources
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gestion des erreurs
+        }
     }
     
 }

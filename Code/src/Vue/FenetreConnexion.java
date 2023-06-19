@@ -21,7 +21,7 @@ import javafx.geometry.Pos;
 //imports pour observer la checkbox
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
- 
+
 public class FenetreConnexion extends BorderPane {
     
     private Button btnConnexion;

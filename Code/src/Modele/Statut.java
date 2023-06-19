@@ -1,3 +1,5 @@
+package Modele;
+
 public class Statut {
     private int identifiant;
     private String nom;

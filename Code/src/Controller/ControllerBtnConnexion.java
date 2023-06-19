@@ -27,8 +27,6 @@ public class ControllerBtnConnexion implements EventHandler<ActionEvent>{
         String username = appli.getUsername();
         String password = appli.getPassword();
 
-        System.out.println(password);
-
         this.user.setUsername(username);
         this.user.setPassword(password);
 

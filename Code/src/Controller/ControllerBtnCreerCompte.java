@@ -1,6 +1,7 @@
 package Controller;
 
 import javafx.event.EventHandler;
+import Modele.BD.GestionUtilisateurs;
 import Modele.BD.InscriptionUtilisateur;
 import Modele.Utilisateur;
 import Vue.AppliVAE;
@@ -12,11 +13,13 @@ public class ControllerBtnCreerCompte implements EventHandler<ActionEvent>{
     private AppliVAE appli;
     private InscriptionUtilisateur inscriptionUtilisateur;
     private Utilisateur user;
+    private GestionUtilisateurs gestionUsers;
     
-    public ControllerBtnCreerCompte(AppliVAE appli,InscriptionUtilisateur inscriptionUtilisateur,Utilisateur user){
+    public ControllerBtnCreerCompte(AppliVAE appli,InscriptionUtilisateur inscriptionUtilisateur,Utilisateur user,GestionUtilisateurs gestionUsers){
         this.appli = appli;
         this.inscriptionUtilisateur = inscriptionUtilisateur;
         this.user = user;
+        this.gestionUsers = gestionUsers;
     }
     
     @Override
@@ -40,11 +43,16 @@ public class ControllerBtnCreerCompte implements EventHandler<ActionEvent>{
             if(!inscriptionUtilisateur.checkDonnéeVide()){
                 if(inscriptionUtilisateur.checkEmail()){
                     if(inscriptionUtilisateur.checkPassword()){
-                        if(!inscriptionUtilisateur.checkExistingUsername()){
-                            if(inscriptionUtilisateur.ajouterUtilisateur()){
-                                System.out.println("Inscription réussie");
-                                this.appli.afficherPopUpErreur(false,"Inscription réussie", "Inscription réussie", "Vous pouvez maintenant vous connecter.");
-                                this.appli.afficheFenetreConnexion();
+                        if(!gestionUsers.checkExistingUsername(username)){
+                            if(!gestionUsers.checkExistingEmail(email)){
+                                if(gestionUsers.ajouterUtilisateur(user)){
+                                    System.out.println("Inscription réussie");
+                                    this.appli.afficherPopUpErreur(false,"Inscription réussie", "Inscription réussie", "Vous pouvez maintenant vous connecter.");
+                                    this.appli.afficheFenetreConnexion();
+                                }
+                            } else{
+                                System.out.println("Erreur lors de l'inscription");
+                                this.appli.afficherPopUpErreur(true,"Erreur d'inscription", "Email déjà utilisé", "Veuillez réessayer.");
                             }
                         } else{
                             System.out.println("Erreur lors de l'inscription");

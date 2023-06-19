@@ -1,8 +1,15 @@
 package Controller;
 
 import Vue.AppliVAE;
+
+import java.sql.SQLException;
+import java.util.List;
+
 import Modele.Utilisateur;
 import Modele.BD.GestionUtilisateurs;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent ;
 import javafx.event.EventHandler;
 public class ControllerBtnDeleteUser implements EventHandler<ActionEvent>{
@@ -25,15 +32,21 @@ public class ControllerBtnDeleteUser implements EventHandler<ActionEvent>{
         if (dernierUserSelected != null) {
             // Obtenez l'ID de l'utilisateur sélectionné
             int id = dernierUserSelected.getId();
-            if(this.appli.confirmationPopUp("Êtes-vous sûr de vouloir supprimé le compte de l'utilisateur ? (cela supprimera aussi toutes ces enchères et ces ventes d'objets)","Cliquez sur OK pour valider.")){
+            if(this.appli.afficherPopUpSupprimerUser(dernierUserSelected)){
                 this.gestionUsers.supprimeUtilisateur(id);
-                this.appli.resetLastUserSelected();
                 this.appli.afficherPopUpErreur(false,"Utilisateur supprimé", "Utilisateur supprimé", "Appuyer sur actualiser pour rafraîchir les données.");
-                // effacer la ligne du TableView
+                ObservableList<Utilisateur> list = FXCollections.observableArrayList();
+                this.appli.resetLastUserSelected();
 
-                // à faire
-
-                //
+                try {
+                    for (Utilisateur user : this.gestionUsers.listeDesUtilisateurs(this.appli.getSearch())) {
+                        list.add(user);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                
+                this.appli.setUtilisateursTable(list);
             }
         } else {
             // Aucune ligne sélectionnée, affichez un message d'erreur

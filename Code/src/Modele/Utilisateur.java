@@ -26,7 +26,7 @@ public class Utilisateur {
         this.actif=actif;
         this.role=role;
     }
-
+    
     public Utilisateur(int id,String username,String email,String password,boolean actif,int idRole){
         this.id=id;
         this.username=username;

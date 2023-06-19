@@ -29,10 +29,6 @@ public class ControllerBtnMenuAdmin implements EventHandler<ActionEvent>{
         }
         if (button.getText().contains("Ventes")){
             System.out.println("Bouton Gestion Ventes cliqué");
-            String nbTotVentes= String.valueOf(this.gestionUsers.getNbTotVentes());
-            String nbVentesValidee= String.valueOf(this.gestionUsers.getNbVentesValidee());
-            String nbVentesNonConclus= String.valueOf(this.gestionUsers.getNbVentesNonConclus());
-            this.appli.setNbVentesLabel(nbTotVentes, nbVentesValidee, nbVentesNonConclus);
             this.appli.afficheFenetreGestionVentes();
         }
         else if(button.getText().contains("Contrats")){

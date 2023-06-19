@@ -1,3 +1,5 @@
+package Modele;
+
 public class Categorie {
     private int identifiant;
     private String nom;
