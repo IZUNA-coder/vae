@@ -18,8 +18,16 @@ public class Enchere {
         return prix;
     }
 
+    public void setPrix(Double prix) {
+        this.prix = prix;
+    }
+
     public Utilisateur getUtilisateur() {
         return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     public Vente getVente() {
@@ -37,6 +45,8 @@ public class Enchere {
         this.vente = vente;
         this.objet = objet;
     }
+
+    
 
     
 
