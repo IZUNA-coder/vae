@@ -2,8 +2,7 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
-
-import Modele.BD.ConnexionMySQL;
+import Modele.Enchere;
 
 public class EnchereBd {
     private ConnexionMySQL laConnexion;

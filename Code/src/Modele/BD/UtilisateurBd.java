@@ -2,8 +2,7 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
-
-import Modele.BD.ConnexionMySQL;
+import Modele.Utilisateur;
 
 
 public class UtilisateurBd {
@@ -37,9 +36,9 @@ public class UtilisateurBd {
         ps.executeUpdate();
     }
 
-    public List<Role> getUtilisateurs() throws SQLException{
+    public List<Utilisateur> getUtilisateurs() throws SQLException{
         ResultSet rs= this.laConnexion.prepareStatement("select * from UTILISATEUR").executeQuery();
-        List<Role> liste=new ArrayList<>();
+        List<Utilisateur> liste=new ArrayList<>();
         while(rs.next()){
             int id=rs.getInt("idut");
             String pseudo=rs.getString("pseudout");
@@ -53,13 +52,13 @@ public class UtilisateurBd {
             }
             RoleBd rlbd=new RoleBd(laConnexion);
             List<Role> listeRoles = rlbd.getRoles();
-            int idRole=0;
+            Role rle=null;
             for (Role role : listeRoles){
                 if (role.getIdRole()==rs.getInt("idrole")){
-                    idRole=rs.getInt("idrole");
+                    rle=role;
                 }
             }
-            Utilisateur util= new Utilisateur(id, pseudo, email, mdp, act, idRole);
+            Utilisateur util= new Utilisateur(id, pseudo, email, mdp, act, rle);
 
             
             liste.add(util);

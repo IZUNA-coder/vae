@@ -2,8 +2,7 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
-
-import Modele.BD.ConnexionMySQL;
+import Modele.Role;
 
 public class RoleBd {
     private ConnexionMySQL laConnexion;
