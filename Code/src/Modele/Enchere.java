@@ -5,14 +5,14 @@ package Modele;
  */
 public class Enchere {
 
-    private int identifiant;
+    private Date dateHeure;
     private double prix;
     private Utilisateur utilisateur;
     private Vente vente;
     private Objet objet;
 
-    public int getIdentifiant() {
-        return identifiant;
+    public int getDateHeure() {
+        return dateHeure;
     }
 
     public Double getPrix() {
@@ -39,8 +39,8 @@ public class Enchere {
         return objet;
     }
 
-    public Enchere(int identifiant, Double prix, Utilisateur utilisateur, Vente vente, Objet objet) {
-        this.identifiant = identifiant;
+    public Enchere(Date dateHeure, Double prix, Utilisateur utilisateur, Vente vente, Objet objet) {
+        this.dateHeure = dateHeure;
         this.prix = prix;
         this.utilisateur = utilisateur;
         this.vente = vente;
