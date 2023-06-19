@@ -1,17 +1,17 @@
 public class Statut {
-    private int identifiant;
+    private char identifiant;
     private String nom;
     
-    public Statut(int identifiant, String nom) {
+    public Statut(char identifiant, String nom) {
         this.identifiant = identifiant;
         this.nom = nom;
     }
 
-    public int getIdentifiant() {
+    public char getIdentifiant() {
         return identifiant;
     }
 
-    public void setIdentifiant(int identifiant) {
+    public void setIdentifiant(char identifiant) {
         this.identifiant = identifiant;
     }
 
