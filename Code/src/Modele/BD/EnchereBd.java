@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 import Modele.Enchere;
+import Modele.Utilisateur;
+import Modele.Vente;
 
 public class EnchereBd {
     private ConnexionMySQL laConnexion;
@@ -28,6 +30,32 @@ public class EnchereBd {
     }
 
     public List<Enchere> getEncheres() throws SQLException{
-        ResultSet rs= this.laConnexion.prepareStatement("select * from ENCHERIR natural join s")
+        ResultSet rs= this.laConnexion.prepareStatement("select * from ENCHERIR");
+        while(rs.next()){
+            Date dateHeure=rs.getDate("dateheure");
+            double prix=rs.getLong("montant");
+
+
+            UtilisateurBd utilBd=new UtilisateurBd(laConnexion);
+            List<Utilisateur> listeUtil = utilBd.getUtilisateurs();
+            Utilisateur utili=null;
+            for (Utilisateur util : listeUtil){
+                if (util.getId()==rs.getInt("idut")){
+                    utili=util;
+                }
+            }
+
+            VenteBd venteBD=new VenteBd(laConnexion);
+            List<Vente> listeVentes = venteBD.getVente();
+            Vente vente=null;
+            for (Vente vnt : listeVentes){
+                if (vnt.getIdentifiant()==rs.getInt("idve")){
+                    vente=vnt;
+                }
+            }
+            Enchere enchere = new Enchere(dateHeure, prix, utili, vente, vente.getObjet());
+            liste.add(enchere);
+        }
+        return liste;
     }
 }
