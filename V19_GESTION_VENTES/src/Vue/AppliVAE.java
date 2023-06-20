@@ -251,7 +251,7 @@ public class AppliVAE extends Application {
         this.btnDeconnexion.setOnAction(new ControllerBtnDeconnexion(this));
 
         //fenetre Admin
-        ControllerBtnMenuAdmin controllerBtnGestionAdmin = new ControllerBtnMenuAdmin(this,this.gestionUsers);
+        ControllerBtnMenuAdmin controllerBtnGestionAdmin = new ControllerBtnMenuAdmin(this,this.gestionUsers,this.gestionVentes);
 
         this.btnGestionUsers = new Button(" Utilisateurs");
         this.btnGestionUsers.setOnAction(controllerBtnGestionAdmin);
@@ -350,7 +350,7 @@ public class AppliVAE extends Application {
             isActifCol.setCellValueFactory(new PropertyValueFactory<>("actif"));
             setTableButtonAction(isActifCol);
 
-            Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh,this.btnEdit,this.btnAddUser);
+            Pane root = new FenetreObjAVendre();
             this.scene = new Scene(root, 1080, 720);
             this.scene.getStylesheets().add("file:./ressources/css/styles.css");
             this.stage.setScene(scene);
@@ -416,9 +416,15 @@ public class AppliVAE extends Application {
             });
         }
         
-        public void afficheFenetreAccueil() {
+        public void afficheFenetreTest() {
+            // Affichage de la fenêtre de test (accueil)
+            Pane root = new FenetreTest(this.btnDeconnexion,this.utilisateur,this.profilVendeur);
+            this.scene.setRoot(root);
+        }
+
+        public void afficheFenetreAccueil(){
             // Affichage de la fenêtre d'accueil
-            Pane root = new FenetreAccueil(this.btnDeconnexion,this.utilisateur,this.profilVendeur);
+            Pane root = new FenetreAccueil();
             this.scene.setRoot(root);
         }
 
@@ -439,6 +445,18 @@ public class AppliVAE extends Application {
             isActifCol.setPrefWidth(80);
             isActifCol.setCellValueFactory(new PropertyValueFactory<>("actif"));
             setTableButtonAction(isActifCol);
+
+            try {
+                this.listUtilisateursRecherchés.clear(); // Effacer les données précédentes
+    
+                for (Utilisateur user : this.gestionUsers.getUtilisateurs()) {
+                    this.listUtilisateursRecherchés.add(user);
+                }
+                
+                setUtilisateursTable(this.listUtilisateursRecherchés);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             
             Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh,this.btnEdit,this.btnAddUser);
             this.scene.setRoot(root);
@@ -459,6 +477,18 @@ public class AppliVAE extends Application {
             this.tfSearchVente.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers,this.listUtilisateursRecherchés));
             this.btnEditVente = new Button("Modifier");
             this.btnEditVente.setOnAction(new ControllerBtnEditUser(this,this.gestionUsers));
+        
+            try {
+                this.listVentesRecherchees.clear(); // Effacer les données précédentes
+
+                for (Vente vente : this.gestionVentes.getVente()) {
+                    this.listVentesRecherchees.add(vente);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            
+            setVentesTable(this.listVentesRecherchees);
             
             Pane root = new FenetreGestionVentes(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearchVente,this.btnSearchVente,this.tableVentes,this.gestionVentes,this.btnDeleteVente,this.btnRefreshVente,this.btnEditVente);
             this.scene.setRoot(root);
@@ -570,7 +600,6 @@ public class AppliVAE extends Application {
             return result.isPresent() && result.get() == ButtonType.OK;
 
         }
-
         public boolean afficheFenetreAddUser() {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initOwner(stage);
@@ -671,7 +700,6 @@ public class AppliVAE extends Application {
                 return this.password.getText().toString();
             }
         }
-
         // fenêtre Inscription
         public String getUsername2() {
             return this.username2.getText().toString();
@@ -745,8 +773,14 @@ public class AppliVAE extends Application {
                                 Button button = new Button(item ? "Actif" : "Inactif");
                                 button.setMinWidth(70);
                                 setGraphic(button);
-                                Utilisateur utilisateur = getTableRow().getItem();
-                                button.setOnAction(new ControllerBtnActifUser(appliVAE, utilisateur, gestionUsers, table));
+                                try{
+                                    Utilisateur utilisateur = getTableRow().getItem();
+                                    if (utilisateur != null) {
+                                        button.setOnAction(new ControllerBtnActifUser(appliVAE, utilisateur, gestionUsers, table));
+                                    }
+                                }
+                                catch(Exception e){
+                                }
                             }
                         }
                     };

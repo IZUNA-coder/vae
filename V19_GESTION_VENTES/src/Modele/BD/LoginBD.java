@@ -11,7 +11,7 @@ public class LoginBD{
         this.nomServer="localhost";
         this.nomBD="VAE";
         this.login="root";
-        this.password="irvyn";
+        this.password="Matthias_crx1";
 
         // Connexion à l'iut
 
