@@ -2,8 +2,9 @@ package Modele;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
+
 import java.util.List;
+import java.sql.Date;
 
 public class Vente {
     
@@ -88,14 +89,14 @@ public class Vente {
         return this.getEnchereMax().getUtilisateur();
     }
 
-    public void ajouteEnchere(Utilisateur util, double prix, int id) throws EnchereTropFaibleException, MemeUtilisateurException{
+    public void ajouteEnchere(Utilisateur util, double prix, Date date) throws EnchereTropFaibleException, MemeUtilisateurException{
         if (util.equals(this.getAcheteurActuel())){
             throw new MemeUtilisateurException();
         }
         if (prix<this.getEnchereMax().getPrix()){
             throw new EnchereTropFaibleException();
         }
-        this.lesEncheres.add(new Enchere(id, prix, util, this, this.objet));
+        this.lesEncheres.add(new Enchere(date, prix, util, this, objet));
 
     }
     

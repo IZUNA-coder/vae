@@ -1,3 +1,4 @@
+package Modele.BD;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ public class VenteBd {
     public void insereVente(Vente vente) throws SQLException{
         PreparedStatement ps=this.laConnexion.prepareStatement("insert into OBJET  values (?,?,?,?,?)");
         ps.setInt(1, vente.getIdentifiant());
-        ps.setLong(2, vente.getPrixBase());
-        ps.setLong(3, vente.getPrixMin());
+        ps.setDouble(2, vente.getPrixBase());
+        ps.setDouble(3, vente.getPrixMin());
         ps.setDate(4, vente.getDebutVente());
         ps.setDate(5, vente.getFinVente());
         ps.setInt(6, vente.getObjet().getIdentifiant());
