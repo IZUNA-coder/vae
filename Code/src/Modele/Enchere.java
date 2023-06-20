@@ -1,5 +1,7 @@
 package Modele;
 
+import java.sql.Date;
+
 /**
  * Enchere
  */
@@ -11,7 +13,7 @@ public class Enchere {
     private Vente vente;
     private Objet objet;
 
-    public int getDateHeure() {
+    public Date getDateHeure() {
         return dateHeure;
     }
 
@@ -39,7 +41,7 @@ public class Enchere {
         return objet;
     }
 
-    public Enchere(Date dateHeure, Double prix, Utilisateur utilisateur, Vente vente, Objet objet) {
+    public Enchere(Date dateHeure, double prix, Utilisateur utilisateur, Vente vente, Objet objet) {
         this.dateHeure = dateHeure;
         this.prix = prix;
         this.utilisateur = utilisateur;

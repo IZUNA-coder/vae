@@ -1,3 +1,5 @@
+package Modele.BD;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ public class StatutBD {
 	}
     public void ajouteStatut(Statut statut)throws SQLException{
        PreparedStatement ps= this.laConnexion.prepareStatement("insert into STATUT values(?,?)");
-        ps.setString(1, statut.getIdentifiant());
+        ps.setString(1, String.valueOf(statut.getIdentifiant()));
         ps.setString(2, statut.getNom());
         ps.executeUpdate();
     }
@@ -26,7 +28,7 @@ public class StatutBD {
         ResultSet rs=this.laConnexion.prepareStatement("select * from STATUT").executeQuery();
         List<Statut> liste= new ArrayList<>();
         while(rs.next()){
-            Statut stat= new Statut(rs.getString("idst"), rs.getString("nomst"));
+            Statut stat= new Statut(rs.getString("idst").charAt(0), rs.getString("nomst"));
             liste.add(stat);
         }
         return liste;

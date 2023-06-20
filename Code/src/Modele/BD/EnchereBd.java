@@ -1,3 +1,5 @@
+package Modele.BD;
+
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -25,12 +27,13 @@ public class EnchereBd {
         ps.setInt(1, enchere.getUtilisateur().getId());
         ps.setInt(2, enchere.getVente().getIdentifiant());
         ps.setDate(3, enchere.getDateHeure());
-        ps.setLong(4, enchere.getPrix());
+        ps.setDouble(4, enchere.getPrix());
         ps.executeUpdate();
     }
 
     public List<Enchere> getEncheres() throws SQLException{
-        ResultSet rs= this.laConnexion.prepareStatement("select * from ENCHERIR");
+        ResultSet rs= this.laConnexion.prepareStatement("select * from ENCHERIR").executeQuery();
+        List<Enchere> liste=new ArrayList<>();
         while(rs.next()){
             Date dateHeure=rs.getDate("dateheure");
             double prix=rs.getLong("montant");

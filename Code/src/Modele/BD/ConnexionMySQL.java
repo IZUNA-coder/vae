@@ -37,10 +37,18 @@ public class ConnexionMySQL {
 		this.connecte=false;
 	}
 
-    public boolean isConnecte() { return this.connecte;}
 
 	public Connection getConnection(){
 		return this.mysql;
+	}
+
+	public boolean isConnecte() { return this.connecte;}
+	public Statement createStatement() throws SQLException {
+		return this.mysql.createStatement();
+	}
+
+	public PreparedStatement prepareStatement(String requete) throws SQLException{
+		return this.mysql.prepareStatement(requete);
 	}
 	
 }

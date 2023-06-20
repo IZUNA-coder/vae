@@ -1,3 +1,4 @@
+package Modele.BD;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class CategorieBD {
         ResultSet rs= this.laConnexion.prepareStatement("select * from CATEGORIE").executeQuery();
         List<Categorie> liste= new ArrayList<>();
         while(rs.next()){
-            Categorie cat= new Categorie(rs.getInt('idcat'), rs.getString('nomcat'));
+            Categorie cat= new Categorie(rs.getInt("idcat"), rs.getString("nomcat"));
             liste.add(cat);
         }
         return liste;
