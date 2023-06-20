@@ -1,5 +1,5 @@
 package Vue;
-import javafx.application.Application;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -7,73 +7,50 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
-import javafx.stage.Screen;
 import javafx.scene.image.ImageView;
 
-public class VueUtilisateur extends Application {
+public class FenetreProfilVendeur extends BorderPane {
 
     private String dateCreation;
     private int nbEncheresConclues;
     private String email;
     private String telephone;
+    private Hyperlink hyperlinkAccueil;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        init();
 
-        BorderPane bd = bd();
-
-        Scene scene = new Scene(bd, 800, 600);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Vue Utilisateur");
-
-        primaryStage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
-        primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
-
-        primaryStage.show();
-    }
-
-    public void init() {
+    public FenetreProfilVendeur(Hyperlink hyperlinkAccueil) {
+        super();
+        this.hyperlinkAccueil=hyperlinkAccueil;
         this.dateCreation = "fevrier 2023";
         this.nbEncheresConclues = 10;
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public BorderPane bd() {
-        BorderPane bd = new BorderPane();
-        bd.setStyle("-fx-border-color: #D3D3D3; -fx-border-width: 5px;");
-        ajouteTop(bd);
-        ajouteCentre(bd);
-        ajouteDroite(bd);
-        bd.setPadding(new Insets(10, 50, 10, 10));// top - right - bottom - left
-        return bd;
+        this.setStyle("-fx-border-color: #D3D3D3; -fx-border-width: 5px;");
+        this.ajouteTop(this);
+        this.ajouteCentre(this);
+        this.ajouteDroite(this);
+        this.setPadding(new Insets(10, 50, 10, 10));// top - right - bottom - left
+        
     }
 
     public void ajouteTop(BorderPane bd) {
         HBox hb = new HBox();
-        Button btn = new Button("  Retour  ");
-        btn.setStyle("-fx-background-color: #ff5050; -fx-text-fill: #FFFFFF; -fx-font-size: 20px; -fx-font-weight: bold; -fx-background-radius: 15px; -fx-border-color: #FFFFFF; -fx-border-width: 1px; -fx-padding: 5px;");
-        btn.setPadding(new Insets(0, 20, 0, 0));// top - right - bottom - left
+        Button btnRetour = new Button("Retour");
+        btnRetour.setCursor(Cursor.HAND);
+        btnRetour.setId("btnRetour");
 
-        Hyperlink hyperlink = new Hyperlink("Accueil");// créer une hyperlien
         Label label = new Label(">");
         Hyperlink hyperlink2 = new Hyperlink("Profils");// créer une hyperlien
         Label label2 = new Label(">");
         Hyperlink hyperlink3 = new Hyperlink("Amaël Maserati");// créer une hyperlien
 
-        hb.getChildren().addAll(btn, hyperlink, label, hyperlink2, label2, hyperlink3);
-        hb.setMargin(btn, new Insets(0, 20, 0, 20));// top - right - bottom - left
+        hb.getChildren().addAll(btnRetour, this.hyperlinkAccueil, label, hyperlink2, label2, hyperlink3);
+        HBox.setMargin(btnRetour, new Insets(0, 20, 0, 20));// top - right - bottom - left
         hb.setAlignment(Pos.CENTER_LEFT);
         bd.setTop(hb);
     }
@@ -98,7 +75,7 @@ public class VueUtilisateur extends Application {
         Text description = new Text("Ce fauteuil est l'équilibre parfait entre confort, style et sophistication. Revétu d'un luxueux cuir vintage de haute qualit\u00E9, il ajoute une touche d'\u00E9l\u00E9gance intemporelle \u00E0 tout int\u00E9rieur.");
         Label status = new Label("EN COURS");
         Label prix = new Label("200 €");
-        ImageView image = new ImageView(new Image("file:./img/fauteuil.jpeg"));
+        ImageView image = new ImageView(new Image("file:./ressources/img/VueUtilisateur/fauteuil.jpeg"));
         // STYLE
         status.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-background-color: #80CEE1; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-padding: 5px;");
         gp.setStyle("-fx-border-color: #D3D3D3; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-padding: 5px;");
@@ -128,7 +105,7 @@ public class VueUtilisateur extends Application {
     public VBox description() {
         VBox vb = new VBox();
 
-        ImageView image = new ImageView(new Image("file:./img/marteau_profil.png"));
+        ImageView image = new ImageView(new Image("file:./ressources/img/VueUtilisateur/marteau_profil.png"));
         image.setFitHeight(50);
         image.setFitWidth(50);
         image.setPreserveRatio(true);
@@ -159,7 +136,7 @@ public class VueUtilisateur extends Application {
         VBox vb = new VBox();
 
         vb.setPadding(new Insets(0, 0, 0, 35));// top - right - bottom - left
-        ImageView image = new ImageView("file:./img/image.png");
+        ImageView image = new ImageView("file:./ressources/img/VueUtilisateur/image.png");
         image.setStyle("-fx-font-color: #FF0000;");
         image.setFitHeight(350);
         image.setFitWidth(350);
@@ -175,8 +152,8 @@ public class VueUtilisateur extends Application {
         nbEncheresConclues.setAlignment(Pos.CENTER);
         nbEncheresConclues.setPadding(new Insets(15, 0, 15, 0));// top - right - bottom - left
         Button contacter = new Button("Contacter");
-        contacter.setStyle("-fx-background-color: #00ffff; -fx-text-fill: #FFFFFF; -fx-font-size: 10px; -fx-font-weight: bold; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-padding: 5px; -fx-font-size: 20px;");
-        contacter.setPadding(new Insets(15, 0, 0, 25));// top - right - bottom - left
+        contacter.setId("search");
+        contacter.setCursor(Cursor.HAND);
         contacter.setAlignment(Pos.CENTER);
         // Appuyer sur le bouton contacter nous ouvre la popUpInfosProfil qui nous donne les informations de l'utilisateur
         contacter.setOnAction(e -> popUpInfosProfil());

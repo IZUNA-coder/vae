@@ -24,7 +24,7 @@ public class ControllerBtnEditUser implements EventHandler<ActionEvent>{
         Utilisateur userSelected = this.appli.getLastUserSelected();
         if(userSelected == null){
             System.out.println("Aucun utilisateur sélectionné");
-            this.appli.afficherPopUpErreur(false, "Aucun utilisateur sélectionné", "Veuillez sélectionner un utilisateur", "Erreur");
+            this.appli.afficherPopUpErreur(true, "Erreur", "Aucun utilisateur sélectionné", "Veuillez sélectionner un utilisateur à supprimer.");
         } else{
             if(!this.appli.afficheFenetreEditUser(this.appli.getLastUserSelected())){
                 System.out.println("Modification annulée");

@@ -62,11 +62,11 @@ public class Utilisateur {
         return this.role;
     }
 
-    public int getIdRole(){             // (répétitif)
+    public int getIdRole(){    // (répétitif)
         return this.role.getIdRole();
     }
 
-    public String getNomRole(){         // (répétitif)
+    public String getNomRole(){ // (répétitif)
         return this.role.getNomRole();
     }
     //

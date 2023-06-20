@@ -6,12 +6,11 @@ import java.util.List;
 
 import Modele.Statut;
 public class StatutBD {
-    private ConnexionMySQL laConnexion;
-	private Statement st;
-	public StatutBD(ConnexionMySQL laConnexion){
+    private Connection laConnexion;
+	public StatutBD(Connection laConnexion){
 		this.laConnexion= laConnexion;
 		try{
-			this.st= this.laConnexion.createStatement();
+			this.laConnexion.createStatement();
 		}catch(Exception exep){
 			System.out.println(exep);
 		}
@@ -20,7 +19,7 @@ public class StatutBD {
 	}
     public void ajouteStatut(Statut statut)throws SQLException{
        PreparedStatement ps= this.laConnexion.prepareStatement("insert into STATUT values(?,?)");
-        ps.setString(1, String.valueOf(statut.getIdentifiant()));
+        ps.setInt(1, statut.getIdentifiant());
         ps.setString(2, statut.getNom());
         ps.executeUpdate();
     }
@@ -28,7 +27,7 @@ public class StatutBD {
         ResultSet rs=this.laConnexion.prepareStatement("select * from STATUT").executeQuery();
         List<Statut> liste= new ArrayList<>();
         while(rs.next()){
-            Statut stat= new Statut(rs.getString("idst").charAt(0), rs.getString("nomst"));
+            Statut stat= new Statut(rs.getInt("idst"), rs.getString("nomst"));
             liste.add(stat);
         }
         return liste;

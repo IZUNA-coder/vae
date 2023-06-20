@@ -3,6 +3,7 @@ package Modele;
 public class Role {
     private int idRole;
     private String nomRole;
+    private final static String[] NOMROLES_STRINGS = {"Administrateur","Utilisateur"};
 
     //constructeurs
     public Role(int id, String nom){
@@ -12,7 +13,7 @@ public class Role {
 
     public Role(int id){
         this.idRole=id;
-        this.nomRole=getNomRole(id);
+        this.nomRole=NOMROLES_STRINGS[id-1];
     }
 
     public Role(String nomRole){
@@ -27,19 +28,19 @@ public class Role {
     }
 
     public int getIdRole(String nomRole){
-        if(nomRole.equals("Administrateur")){return 1;}
-        else{return 2;}
+        int id=0;
+        for(int i=0;i<NOMROLES_STRINGS.length;i++){
+            if(nomRole.equals(NOMROLES_STRINGS[i])){
+                id=i+1;
+            }
+        }
+        return id;
     }
 
     public String getNomRole(){
         return this.nomRole;
     }
 
-    public String getNomRole(int idRole){
-        if(idRole==1){
-            return "Administrateur";
-        } else{return "Utilisateur";}
-    }
     
     //
 

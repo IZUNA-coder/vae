@@ -17,10 +17,10 @@ public class ControllerEnterRechecherUsers implements EventHandler<KeyEvent>{
     private GestionUtilisateurs gestionUsers;
     private ObservableList<Utilisateur> utilisateurs;
     
-    public ControllerEnterRechecherUsers(AppliVAE appli,GestionUtilisateurs gestionUsers){
+    public ControllerEnterRechecherUsers(AppliVAE appli,GestionUtilisateurs gestionUsers,ObservableList<Utilisateur> utilisateurs){
         this.appli = appli;
         this.gestionUsers=gestionUsers;
-        utilisateurs = FXCollections.observableArrayList();
+        this.utilisateurs = FXCollections.observableArrayList();
     }
     
     @Override
@@ -29,12 +29,12 @@ public class ControllerEnterRechecherUsers implements EventHandler<KeyEvent>{
             System.out.println("Enter Rechercher Users cliqué");
             // ...
             try {
-                utilisateurs.clear(); // Effacer les données précédentes
+                this.utilisateurs.clear(); // Effacer les données précédentes
 
                 for (Utilisateur user : this.gestionUsers.listeDesUtilisateurs(this.appli.getSearch())) {
-                    utilisateurs.add(user);
+                    this.utilisateurs.add(user);
                 }
-                this.appli.setUtilisateursTable(utilisateurs);
+                this.appli.setUtilisateursTable(this.utilisateurs);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

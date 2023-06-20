@@ -1,23 +1,19 @@
 package Modele.BD;
+
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
-import Modele.Categorie;
 import Modele.Objet;
-import Modele.Statut;
-import Modele.Utilisateur;
 import Modele.Vente;
 
 
-public class VenteBd {
-    private ConnexionMySQL laConnexion;
-    private Statement st;
-
-    public VenteBd(ConnexionMySQL laConnexion){
+public class GestionVentes {
+    private Connection laConnexion;
+    public GestionVentes(Connection laConnexion){
         this.laConnexion=laConnexion;
         try{
-            this.st=this.laConnexion.createStatement();
+            this.laConnexion.createStatement();
         }
         catch (Exception e){
             System.out.println(e);
@@ -40,32 +36,20 @@ public class VenteBd {
     }
 
     public List<Vente> getVente() throws SQLException{
-        ResultSet rs= this.laConnexion.prepareStatement("select * from OBJET").executeQuery();
+        PreparedStatement ps=this.laConnexion.prepareStatement("select * from VENTE");
+        ResultSet rs= ps.executeQuery();
         List<Vente> liste=new ArrayList<>();
         while(rs.next()){
             int id=rs.getInt("idve");
-            double prixBase=rs.getLong("prixbase");
-            double prixMin=rs.getLong("prixmin");
+            double prixBase=rs.getDouble("prixbase");
+            double prixMin=rs.getDouble("prixmin");
             Date debut=rs.getDate("debutve");
             Date fin=rs.getDate("finve");
+            int stat=rs.getInt("idst");
 
             ObjetBd objBd=new ObjetBd(laConnexion);
-            List<Objet> listeObjet = objBd.getObjets();
-            Objet obj=null;
-            for (Objet objet : listeObjet){
-                if (objet.getIdentifiant()==rs.getInt("idob")){
-                    obj=objet;
-                }
-            }
+            Objet obj = objBd.getObjet(rs.getInt("idob"));
 
-            StatutBD stBD=new StatutBD(laConnexion);
-            List<Statut> listeST = stBD.listeStatut();
-            Statut stat=null;
-            for (Statut st : listeST){
-                if (st.getIdentifiant()==rs.getInt("idst")){
-                    stat=st;
-                }
-            }
             Vente vente= new Vente(id, prixBase, prixMin, debut, fin, stat, obj);
             liste.add(vente);
         }

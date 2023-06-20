@@ -1,16 +1,16 @@
 package Modele.BD;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import Modele.Categorie;
 public class CategorieBD {
-    private ConnexionMySQL laConnexion;
-	private Statement st;
-	public CategorieBD(ConnexionMySQL laConnexion){
+    private Connection laConnexion;
+	public CategorieBD(Connection laConnexion){
 		this.laConnexion= laConnexion;
 		try{
-			this.st= this.laConnexion.createStatement();
+			this.laConnexion.createStatement();
 		}catch(Exception exep){
 			System.out.println(exep);
 		}

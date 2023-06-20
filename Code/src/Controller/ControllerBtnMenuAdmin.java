@@ -2,7 +2,9 @@ package Controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+
 import Modele.BD.GestionUtilisateurs;
+import Modele.BD.GestionVentes;
 import Vue.AppliVAE;
 import javafx.event.ActionEvent ;
 
@@ -10,10 +12,12 @@ public class ControllerBtnMenuAdmin implements EventHandler<ActionEvent>{
     
     private AppliVAE appli;
     private GestionUtilisateurs gestionUsers;
+    // private GestionVentes gestionVente;
     
-    public ControllerBtnMenuAdmin(AppliVAE appli,GestionUtilisateurs gestionUsers){
+    public ControllerBtnMenuAdmin(AppliVAE appli,GestionUtilisateurs gestionUsers, GestionVentes gestionVente){
         this.appli = appli;
         this.gestionUsers=gestionUsers;
+        // this.gestionVente = gestionVente;
     }
     
     @Override

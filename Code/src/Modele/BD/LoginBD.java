@@ -8,17 +8,17 @@ public class LoginBD{
    
     public LoginBD(){
         // Connexion en localHost
-        // this.nomServer="localhost";
-        // this.nomBD="VAE";
-        // this.login="root";
-        // this.password="irvyn";
+        this.nomServer="localhost";
+        this.nomBD="VAE";
+        this.login="root";
+        this.password="root";
 
         // Connexion à l'iut
 
-        this.nomServer="servinfo-mariadb";
-        this.nomBD="DBcoursimault";
-        this.login="coursimault";
-        this.password="coursimault";
+        // this.nomServer="servinfo-mariadb";
+        // this.nomBD="DBcoursimault";
+        // this.login="coursimault";
+        // this.password="coursimault";
     }
 
     public String getMotDePasse() {

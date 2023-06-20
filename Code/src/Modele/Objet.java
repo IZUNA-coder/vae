@@ -9,12 +9,13 @@ public class Objet {
     private Utilisateur utilisateur;
 
     
-    public Objet(int identifiant, String nom, String description, Categorie categorie, Utilisateur utilisateur) {
+    public Objet(int identifiant, String nom, String description, int idUt,int idCat) {
         this.identifiant = identifiant;
         this.nom = nom;
         this.description = description;
-        this.categorie = categorie;
-        this.utilisateur = utilisateur;
+        this.utilisateur = new Utilisateur();
+        this.utilisateur.setId(idUt);
+        this.categorie = new Categorie(idCat);
     }
     
     public int getIdentifiant() {

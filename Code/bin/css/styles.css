@@ -1,4 +1,4 @@
-#fenetreConnexion,#fenetreInscription,#fenetreAdmin{
+#fenetreConnexion,#fenetreInscription,#fenetreAdmin,#fenetreAccueil{
     -fx-background-image: url('file:./ressources/img/background3.png');
     -fx-background-color:#383838;
 }
@@ -44,7 +44,7 @@
     -fx-pref-width: 100px;
 }
 
-#btnCreerCompte,#btnConnexion,#search,#btnDeleteUser,#btnRefresh,#btnEdit{
+#btnCreerCompte,#btnConnexion,#search,#btnDeleteUser,#btnRefresh,#btnEdit,#btnAddUser{
     -fx-background-radius: 3em;
     -fx-background-color:#51D1E6;
     -fx-text-fill: white;
@@ -52,7 +52,7 @@
     -fx-pref-width: 250px;
 }
 
-#btnConnexion:hover,#btnInscrire:hover,#btnCreerCompte:hover,#search:hover,#btnDeleteUser:hover,#btnRefresh:hover,#btnEdit:hover{
+#btnConnexion:hover,#btnInscrire:hover,#btnCreerCompte:hover,#search:hover,#btnDeleteUser:hover,#btnRefresh:hover,#btnEdit:hover,#btnAddUser:hover{
     -fx-border-radius: 3em;
     -fx-background-color:#FFFFFF;
     -fx-border-color: #51D1E6;

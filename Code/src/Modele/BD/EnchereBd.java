@@ -9,13 +9,11 @@ import Modele.Utilisateur;
 import Modele.Vente;
 
 public class EnchereBd {
-    private ConnexionMySQL laConnexion;
-    private Statement st;
-
-    public EnchereBd(ConnexionMySQL laConnexion){
+    private Connection laConnexion;
+    public EnchereBd(Connection laConnexion){
         this.laConnexion=laConnexion;
         try{
-            this.st=this.laConnexion.createStatement();
+            this.laConnexion.createStatement();
         }
         catch (Exception e){
             System.out.println(e);
@@ -26,14 +24,15 @@ public class EnchereBd {
         PreparedStatement ps=this.laConnexion.prepareStatement("insert into ENCHERIR  values (?,?,?,?)");
         ps.setInt(1, enchere.getUtilisateur().getId());
         ps.setInt(2, enchere.getVente().getIdentifiant());
-        ps.setDate(3, enchere.getDateHeure());
+        ps.setDate(3, new Date(System.currentTimeMillis()));
         ps.setDouble(4, enchere.getPrix());
         ps.executeUpdate();
     }
 
     public List<Enchere> getEncheres() throws SQLException{
-        ResultSet rs= this.laConnexion.prepareStatement("select * from ENCHERIR").executeQuery();
-        List<Enchere> liste=new ArrayList<>();
+        PreparedStatement statement = this.laConnexion.prepareStatement("select * from ENCHERIR");
+        ResultSet rs= statement.executeQuery();
+        List<Enchere> liste = new ArrayList<>();
         while(rs.next()){
             Date dateHeure=rs.getDate("dateheure");
             double prix=rs.getLong("montant");
@@ -48,7 +47,7 @@ public class EnchereBd {
                 }
             }
 
-            VenteBd venteBD=new VenteBd(laConnexion);
+            GestionVentes venteBD=new GestionVentes(laConnexion);
             List<Vente> listeVentes = venteBD.getVente();
             Vente vente=null;
             for (Vente vnt : listeVentes){

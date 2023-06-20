@@ -40,6 +40,28 @@ public class GestionUtilisateurs {
         return liste;
     }
 
+    public ArrayList<Utilisateur> getUtilisateurs() throws SQLException {
+        ArrayList<Utilisateur> liste = new ArrayList<>();
+        String query = "SELECT * FROM UTILISATEUR";
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            ResultSet r = statement.executeQuery();
+            while (r.next()) {
+                liste.add(new Utilisateur(
+                        r.getInt("idut"),
+                        r.getString("pseudout"),
+                        r.getString("emailut"),
+                        r.getString("mdput"),
+                        r.getString("activeut").charAt(0) == 'O',
+                        r.getInt("idrole")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gérer les erreurs de requête ici
+        }
+        return liste;
+    }
+
     public boolean ajouterUtilisateur(Utilisateur user) {
         // Ajouter l'utilisateur dans la base de données
         // Utilisez votre logique de requête SQL pour effectuer l'insertion
