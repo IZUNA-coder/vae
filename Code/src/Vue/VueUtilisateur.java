@@ -63,7 +63,7 @@ public class VueUtilisateur extends Application {
         HBox hb = new HBox();
         Button btn = new Button("  Retour  ");
         btn.setStyle("-fx-background-color: #ff5050; -fx-text-fill: #FFFFFF; -fx-font-size: 20px; -fx-font-weight: bold; -fx-background-radius: 15px; -fx-border-color: #FFFFFF; -fx-border-width: 1px; -fx-padding: 5px;");
-        btn.setPadding(new Insets(0, 20, 0, 0));// top - right - bottom - left
+        btn.setPadding(new Insets(0, +20, 0, 0));// top - right - bottom - left
 
         Hyperlink hyperlink = new Hyperlink("Accueil");// créer une hyperlien
         Label label = new Label(">");

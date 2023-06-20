@@ -1,0 +1,148 @@
+#fenetreConnexion,#fenetreInscription,#fenetreAdmin{
+    -fx-background-image: url('file:./ressources/img/background3.png');
+    -fx-background-color:#383838;
+}
+
+#btnFullscreen:hover{
+    -fx-border-radius: 1em;
+    -fx-border-color: white;
+}
+
+#btnFullscreen{
+    -fx-background-color: transparent;
+}
+
+#menu{
+    -fx-background-radius: 3em;         /* bordure arondis */
+    -fx-background-color: #FFFFFF;    /* couleur fond du menu */
+}
+
+#password,#id,#confirmPassword,#email,#passwordShow{
+    -fx-background-radius: 3em;
+    -fx-background-color: #F7F5F5;
+    -fx-font-size: 15;
+    -fx-padding: 12;
+    -fx-pref-height: 40px;
+    -fx-pref-width: 400px;
+    -fx-text-fill: grey;
+}
+
+#btnDeconnexion{
+    -fx-background-radius: 3em;
+    -fx-background-color: #F7F5F5;
+    -fx-font-size: 15;
+    -fx-padding: 12;
+    -fx-pref-height: 40px;
+    -fx-text-fill: grey;
+}
+
+#btnInscrire{
+    -fx-background-radius: 3em;
+    -fx-background-color:#51D1E6;
+    -fx-text-fill: white;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 100px;
+}
+
+#btnCreerCompte,#btnConnexion,#search,#btnDeleteUser,#btnRefresh,#btnEdit,#btnAddUser{
+    -fx-background-radius: 3em;
+    -fx-background-color:#51D1E6;
+    -fx-text-fill: white;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 250px;
+}
+
+#btnConnexion:hover,#btnInscrire:hover,#btnCreerCompte:hover,#search:hover,#btnDeleteUser:hover,#btnRefresh:hover,#btnEdit:hover,#btnAddUser:hover{
+    -fx-border-radius: 3em;
+    -fx-background-color:#FFFFFF;
+    -fx-border-color: #51D1E6;
+    -fx-text-fill: #51D1E6;
+}
+
+#btnQuitter{
+    -fx-background-radius: 3em;
+    -fx-background-color:#ff5050;
+    -fx-text-fill: white;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 500px;
+}
+
+#btnQuitter:hover{
+    -fx-background-color: #ff2c2c;
+    -fx-border-radius: 3em;
+    -fx-border-color:white;
+}
+
+#btnRetour,#btnRetourAdmin{
+    -fx-background-radius: 3em;
+    -fx-background-color:#ff5050;
+    -fx-text-fill: white;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 100px;
+}
+
+#btnRetour:hover,#btnRetourAdmin:hover{
+    -fx-border-radius: 3em;
+    -fx-background-color:#FFFFFF;
+    -fx-border-color: #ff5050;
+    -fx-text-fill: #ff5050;
+}
+
+/* CheckBox show password */
+#checkbox .box{
+    -fx-background-color: white;
+    -fx-border-color: #51D1E6;
+    -fx-border-radius: 2em;
+}
+
+#checkbox:selected .mark{
+    -fx-background-color: white;
+    -fx-background-radius: 2em;
+}
+
+#checkbox:selected .box{
+    -fx-background-color: #51D1E6;
+    -fx-background-radius: 2em;
+}
+
+/* Module Administration */
+#titreModuleAdmin, #titreVAE {
+    -fx-fill: white;
+}
+
+#fenetreAdmin Button {
+    -fx-pref-width: 22em;
+    -fx-pref-height: 12em;
+    -fx-font-size: 2em;
+    -fx-background-radius: 1em;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0, 0, 0);
+}
+
+#fenetreAdmin Button:hover {
+    -fx-background-color: #51D1E6;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0, 0, 0);
+}
+
+
+#btnDeconnexion:hover{
+    -fx-border-radius: 3em;
+    -fx-border-width: 2px;
+    -fx-border-color: white;
+    -fx-background-color:#23e2ff;
+    -fx-text-fill: white;
+}
+
+/* Module Administration (Entreprise/Ventes) */
+#boxTotUsers,#boxUsersActif,#boxUsersInactif,#boxTotVentes,#boxVentesValidee,#boxVentesNonConclus{
+    -fx-background-color:linear-gradient(to right, #2b303c, #525968);
+    -fx-background-radius:1em;
+    -fx-pref-height: 150px;
+    -fx-pref-width: 400px;
+}
+
+#txtDashboard{
+    -fx-text-fill: white;
+}

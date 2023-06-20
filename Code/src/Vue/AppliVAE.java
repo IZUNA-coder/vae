@@ -1,5 +1,3 @@
-package Vue;
-
 import Controller.ControleQuitter;
 import Controller.ControllerBtnActifUser;
 import Controller.ControllerBtnConnexion;
