@@ -20,10 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import Modele.GestionVentes;
-import Modele.Utilisateur;
 import Modele.Vente;
-import Modele.BD.GestionUtilisateurs;
+import Modele.BD.GestionVentes;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
  
@@ -36,17 +34,15 @@ public class FenetreGestionVentes extends BorderPane {
     private Button btnRefresh;
     private Button btnEdit;
     private TableView<Vente> table;
-    private TableColumn<Vente, Boolean> isActifCol;
     private Button btnDeleteVente;
     
-    public FenetreGestionVentes(Button boutonDeco, Button btnRetourAdmin,TextField tfSearch,Button btnSearch,TableView<Vente> table,GestionVentes gestionVentes,TableColumn<Vente, Boolean> isActifCol,Button btnDeleteVente,Button btnRefresh,Button btnEdit){
+    public FenetreGestionVentes(Button boutonDeco, Button btnRetourAdmin,TextField tfSearch,Button btnSearch,TableView<Vente> table,GestionVentes gestionVentes,Button btnDeleteVente,Button btnRefresh,Button btnEdit){
         super();
         this.btnDeconnexion = boutonDeco;
         this.btnRetourAdmin = btnRetourAdmin;
         this.tfSearch=tfSearch;
         this.btnSearch=btnSearch;
         this.table=table;
-        this.isActifCol=isActifCol;
         this.btnDeleteVente=btnDeleteVente;
         this.btnRefresh=btnRefresh;
         this.btnEdit=btnEdit;
@@ -111,46 +107,48 @@ public class FenetreGestionVentes extends BorderPane {
             new TableColumn<>("ID");
         idCol.setPrefWidth(80);
 
-        TableColumn<Vente, Integer> prixBaseCol =
+        TableColumn<Vente, Double> prixBaseCol =
             new TableColumn<>("Prix de base");
-        prixBaseCol.setPrefWidth(80);
+        prixBaseCol.setPrefWidth(100);
 
-        TableColumn<Vente, Integer> prixMinCol =
+        TableColumn<Vente, Double> prixMinCol =
             new TableColumn<>("Prix minimum");
-        prixMinCol.setPrefWidth(80);
+        prixMinCol.setPrefWidth(100);
 
         TableColumn<Vente, Date> debutVeCol =
             new TableColumn<>("Début de la vente");
-        debutVeCol.setPrefWidth(80);
+        debutVeCol.setPrefWidth(150);
 
         TableColumn<Vente, Date> finVeCol =
             new TableColumn<>("Fin de la vente");
-        finVeCol.setPrefWidth(80);
+        finVeCol.setPrefWidth(150);
 
-        TableColumn<Vente, String> idObjCol =
-                new TableColumn<>("ID de l'objet");
-        idObjCol.setPrefWidth(150);
-
-        TableColumn<Vente, String> idStatutCol =
+        TableColumn<Vente, Integer> idStatutCol =
                 new TableColumn<>("Statut");
-        idStatutCol.setPrefWidth(250);
+        idStatutCol.setPrefWidth(150);
 
-        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        prixBaseCol.setCellValueFactory(new PropertyValueFactory<>("prixbase"));
-        prixMinCol.setCellValueFactory(new PropertyValueFactory<>("prixmin"));
-        debutVeCol.setCellValueFactory(new PropertyValueFactory<>("debutve"));
-        finVeCol.setCellValueFactory(new PropertyValueFactory<>("finve"));
-        idObjCol.setCellValueFactory(new PropertyValueFactory<>("idob"));
-        idStatutCol.setCellValueFactory(new PropertyValueFactory<>("idst"));
+        TableColumn<Vente, Integer> idObjCol =
+                new TableColumn<>("ID de l'objet");
+        idObjCol.setPrefWidth(80);
+
+        
+
+        idCol.setCellValueFactory(new PropertyValueFactory<>("identifiant"));
+        prixBaseCol.setCellValueFactory(new PropertyValueFactory<>("prixBase"));
+        prixMinCol.setCellValueFactory(new PropertyValueFactory<>("prixMin"));
+        debutVeCol.setCellValueFactory(new PropertyValueFactory<>("debutVente"));
+        finVeCol.setCellValueFactory(new PropertyValueFactory<>("finVente"));
+        idStatutCol.setCellValueFactory(new PropertyValueFactory<>("nomStatut"));
+        idObjCol.setCellValueFactory(new PropertyValueFactory<>("idObjet"));
     
         List<TableColumn<Vente, ?>> columns = new ArrayList<>();
         columns.add(idCol);
         columns.add(prixBaseCol);
         columns.add(prixMinCol);
+        columns.add(debutVeCol);
         columns.add(finVeCol);
-        columns.add(finVeCol);
-        columns.add(idObjCol);
         columns.add(idStatutCol);
+        columns.add(idObjCol);
     
         this.table.getColumns().addAll(columns);
         this.table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

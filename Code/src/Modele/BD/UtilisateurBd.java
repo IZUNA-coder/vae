@@ -4,18 +4,16 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
-import Modele.Utilisateur;
 import Modele.Role;
+import Modele.Utilisateur;
 
 
 public class UtilisateurBd {
-    private ConnexionMySQL laConnexion;
-    private Statement st;
-
-    public UtilisateurBd(ConnexionMySQL laConnexion){
+    private Connection laConnexion;
+    public UtilisateurBd(Connection laConnexion){
         this.laConnexion=laConnexion;
         try{
-            this.st=this.laConnexion.createStatement();
+            this.laConnexion.createStatement();
         }
         catch (Exception e){
             System.out.println(e);
@@ -33,7 +31,7 @@ public class UtilisateurBd {
         }else{
             ps.setString(5, "N");
         }
-        ps.setInt(6, util.getIdRole());
+        ps.setInt(6, util.getRole().getIdRole());
         
         
         ps.executeUpdate();

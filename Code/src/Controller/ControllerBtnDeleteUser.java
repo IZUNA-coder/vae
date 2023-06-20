@@ -3,11 +3,9 @@ package Controller;
 import Vue.AppliVAE;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import Modele.Utilisateur;
 import Modele.BD.GestionUtilisateurs;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent ;

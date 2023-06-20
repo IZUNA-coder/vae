@@ -1,7 +1,9 @@
 package Vue;
 
 import Controller.ControleQuitter;
+import Controller.ControllerBtnAccueil;
 import Controller.ControllerBtnActifUser;
+import Controller.ControllerBtnAddUser;
 import Controller.ControllerBtnConnexion;
 import Controller.ControllerBtnCreerCompte;
 import Controller.ControllerBtnDeconnexion;
@@ -9,12 +11,16 @@ import Controller.ControllerBtnDeleteUser;
 import Controller.ControllerBtnEditUser;
 import Controller.ControllerBtnFullscreen;
 import Controller.ControllerBtnMenuAdmin;
+import Controller.ControllerBtnProfil;
+import Controller.ControllerBtnProfilVendeur;
+import Controller.ControllerBtnVAE;
 import Controller.ControllerEnterCreerCompte;
 import Controller.ControllerLienInscription;
+import Controller.ControllerRechecheVentes;
 import Controller.ControllerRechecherUsers;
 import Controller.ControllerRetour;
 import Controller.ControllerRetourAdmin;
-import Modele.GestionVentes;
+import Modele.Role;
 import Modele.Utilisateur;
 import Modele.Vente;
 import Vue.Administration.FenetreAdmin;
@@ -30,11 +36,11 @@ import Controller.ControllerLastUserSelected;
 import Modele.BD.ConnexionMySQL;
 import Modele.BD.ConnexionUtilisateur;
 import Modele.BD.GestionUtilisateurs;
+import Modele.BD.GestionVentes;
 import Modele.BD.InscriptionUtilisateur;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
 // autres imports
@@ -50,6 +56,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableCell;
@@ -58,9 +65,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -101,6 +110,10 @@ public class AppliVAE extends Application {
     private ObservableList<Utilisateur> listUtilisateursRecherchés;
     private Utilisateur dernierUserSelected;
     private Button btnEdit;
+    private Button btnAddUser;
+    private Button btnVAE;
+    private Button btnProfil;
+    private ImageView img = new ImageView(new Image("file:ressources/img//PageAccueil/imgprofile.png"));
 
     // edit users
     private TextField tfEditID;
@@ -108,13 +121,18 @@ public class AppliVAE extends Application {
     private TextField tfEditEmail;
     private ComboBox<String> cbEditRole;
 
+    // add users
+    private TextField tfAddUsername;
+    private TextField tfAddEmail;
+    private PasswordField pfAddPassword;
+    private ComboBox<String> cbAddRole;
+
     // Gestion Entreprise
     private Label lbNbTotUsers;
     private Label lbNbUsersActif;
     private Label lbNbUsersInactif;
 
     // Gestion Ventes
-    private List<Vente> listVentes;
     private Label lbNbTotVentes;
     private Label lbNbVentesValidée;
     private Label lbNbVentesNonConclus;
@@ -124,12 +142,15 @@ public class AppliVAE extends Application {
     private TextField tfSearchVente;
     private TableView<Vente> tableVentes;
     private Button btnDeleteVente;
-    private ObservableList<Vente> listVentesRecherchees;
-    private Vente derniereVenteSelected;
     private Button btnEditVente;
+    private ObservableList<Vente> listVentesRecherchees;
+    // private Vente derniereVenteSelected;
 
     private GestionVentes gestionVentes;
 
+    //
+    private Hyperlink hyperlinkAccueil;
+    private Button profilVendeur;
     //
 
     private AppliVAE appliVAE;
@@ -194,7 +215,7 @@ public class AppliVAE extends Application {
         this.connexionUtilisateur = new ConnexionUtilisateur(utilisateur, getConnection());
         this.inscriptionUtilisateur = new InscriptionUtilisateur(utilisateur);
         this.gestionUsers = new GestionUtilisateurs(getConnection());
-        this.gestionVentes= new GestionVentes();
+        this.gestionVentes= new GestionVentes(getConnection());
 
         //fenetre Connexion
 
@@ -235,9 +256,10 @@ public class AppliVAE extends Application {
         //fenetre Accueil
         this.btnDeconnexion = new Button("DÉCONNEXION");
         this.btnDeconnexion.setOnAction(new ControllerBtnDeconnexion(this));
+        this.gestionVentes = new Modele.BD.GestionVentes(getConnection());
 
         //fenetre Admin
-        ControllerBtnMenuAdmin controllerBtnGestionAdmin = new ControllerBtnMenuAdmin(this,this.gestionUsers);
+        ControllerBtnMenuAdmin controllerBtnGestionAdmin = new ControllerBtnMenuAdmin(this,this.gestionUsers,this.gestionVentes);
 
         this.btnGestionUsers = new Button(" Utilisateurs");
         this.btnGestionUsers.setOnAction(controllerBtnGestionAdmin);
@@ -260,6 +282,13 @@ public class AppliVAE extends Application {
         this.btnRetourAdmin = new Button("RETOUR");
         this.btnRetourAdmin.setOnAction(new ControllerRetourAdmin(this));
 
+        this.btnVAE = new Button("VAE");
+        this.btnVAE.setOnAction(new ControllerBtnVAE(this));
+        this.btnProfil = new Button(null, this.img);
+        this.img.setFitHeight(50);
+        this.img.setFitWidth(50);
+        this.btnProfil.setOnAction(new ControllerBtnProfil(this));
+
         // fenêtre Gestion Users
         this.btnSearch = new Button("OK");
         this.btnRefresh = new Button("Actualiser");
@@ -267,18 +296,26 @@ public class AppliVAE extends Application {
         this.btnSearch.setOnAction(new ControllerRechecherUsers(this,this.gestionUsers,this.listUtilisateursRecherchés));
         this.btnRefresh.setOnAction(new ControllerRechecherUsers(this,this.gestionUsers,this.listUtilisateursRecherchés));
         this.tfSearch = new TextField("");
-        this.tfSearch.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers));
+        this.tfSearch.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers,this.listUtilisateursRecherchés));
         this.table = new TableView<>();
         this.table.setOnMouseClicked(new ControllerLastUserSelected(this, table));
         this.btnDeleteUser = new Button("Supprimer l'utilisateur");
         this.btnDeleteUser.setOnAction(new ControllerBtnDeleteUser(this, gestionUsers));
         this.btnEdit = new Button("Modifier l'utilisateur");
         this.btnEdit.setOnAction(new ControllerBtnEditUser(this, gestionUsers));
+        this.btnAddUser = new Button("Ajouter un utilisateur");
+        this.btnAddUser.setOnAction(new ControllerBtnAddUser(this, gestionUsers));
 
         this.tfEditID = new TextField();
         this.tfEditUsername = new TextField();
         this.tfEditEmail = new TextField();
         this.cbEditRole = new ComboBox<>();
+
+        this.tfAddUsername = new TextField();
+        this.tfAddEmail = new TextField();
+        this.pfAddPassword = new PasswordField();
+        this.pfAddPassword.setPromptText("Mot de passe");
+        this.cbAddRole = new ComboBox<>();
         
         // fenêtre Gestion Entreprise
         this.lbNbTotUsers = new Label("10");
@@ -293,21 +330,27 @@ public class AppliVAE extends Application {
         this.btnSearchVente = new Button("OK");
         this.btnRefreshVente = new Button("Actualiser");
         this.listVentesRecherchees = FXCollections.observableArrayList();
-        this.btnSearchVente.setOnAction(new ControllerRechecherUsers(this,this.gestionUsers,this.listUtilisateursRecherchés));
-        this.btnRefreshVente.setOnAction(new ControllerRechecherUsers(this,this.gestionUsers,this.listUtilisateursRecherchés));
+        this.btnSearchVente.setOnAction(new ControllerRechecheVentes(this,this.gestionVentes,this.listVentesRecherchees));
+        this.btnRefreshVente.setOnAction(new ControllerRechecheVentes(this,this.gestionVentes,this.listVentesRecherchees));
         this.tfSearchVente = new TextField("");
-        this.tfSearchVente.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers));
+        // this.tfSearchVente.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers));
         this.tableVentes = new TableView<>();
-        this.tableVentes.setOnMouseClicked(new ControllerLastUserSelected(this, table));
+        // this.tableVentes.setOnMouseClicked(new ControllerLastUserSelected(this, table));
         this.btnDeleteVente = new Button("Supprimer l'utilisateur");
-        this.btnDeleteVente.setOnAction(new ControllerBtnDeleteUser(this, gestionUsers));
+        // this.btnDeleteVente.setOnAction(new ControllerBtnDeleteUser(this, gestionUsers));
         this.btnEditVente = new Button("Modifier l'utilisateur");
-        this.btnEditVente.setOnAction(new ControllerBtnEditUser(this, gestionUsers));
+        // this.btnEditVente.setOnAction(new ControllerBtnEditUser(this, gestionUsers));
 
         // this.tfEditID = new TextField();
         // this.tfEditUsername = new TextField();
         // this.tfEditEmail = new TextField();
         // this.cbEditRole = new ComboBox<>();
+    
+        this.hyperlinkAccueil = new Hyperlink("Accueil");// créer une hyperlien
+        this.hyperlinkAccueil.setOnAction(new ControllerBtnAccueil(this));
+
+        this.profilVendeur = new Button("Profil Vendeur");
+        this.profilVendeur.setOnAction(new ControllerBtnProfilVendeur(this));
     }
 
         @Override
@@ -315,14 +358,14 @@ public class AppliVAE extends Application {
             this.stage = stage;
             this.btnFullscreen.setOnAction(new ControllerBtnFullscreen(this.stage));
             // Création de la première fenêtre de connexion
-            // Pane root = new FenetreConnexion(this.btnConnexion, this.btnQuitter, this.btnLienInscription, this.username, this.password,this.passwordMontrer,this.showPassword,this.btnFullscreen);
+            Pane root = new FenetreConnexion(this.btnConnexion, this.btnQuitter, this.btnLienInscription, this.username, this.password,this.passwordMontrer,this.showPassword,this.btnFullscreen);
             
             TableColumn<Utilisateur, Boolean> isActifCol = new TableColumn<>("Actif");
             isActifCol.setPrefWidth(80);
             isActifCol.setCellValueFactory(new PropertyValueFactory<>("actif"));
             setTableButtonAction(isActifCol);
 
-            Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh,this.btnEdit);
+            // Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh,this.btnEdit,this.btnAddUser);;
             this.scene = new Scene(root, 1080, 720);
             this.scene.getStylesheets().add("file:./ressources/css/styles.css");
             this.stage.setScene(scene);
@@ -388,12 +431,22 @@ public class AppliVAE extends Application {
             });
         }
         
-        public void afficheFenetreAccueil() {
-            // Affichage de la fenêtre d'accueil
-            Pane root = new FenetreAccueil(this.btnDeconnexion,this.utilisateur);
+        public void afficheFenetreTest() {
+            // Affichage de la fenêtre de test (accueil)
+            Pane root = new FenetreTest(this.btnDeconnexion,this.utilisateur,this.profilVendeur);
             this.scene.setRoot(root);
         }
 
+        public void afficheFenetreAccueil(){
+            // Affichage de la fenêtre d'accueil
+            Pane root = new FenetreAccueil(this.utilisateur, this.gestionVentes, this.btnVAE, this.btnProfil);
+            this.scene.setRoot(root);
+        }
+        public void afficheFenetreProfil() {
+            // Affichage de la fenêtre de profil
+            Pane root = new FenetreProfil(this.btnVAE);
+            this.scene.setRoot(root);
+        }
         public void afficheFenetreAdmin() {
             // Affichage de la fenêtre d'accueil
             Pane root = new FenetreAdmin(this.btnDeconnexion,this.btnGestionUsers,this.btnGestionSignalements,btnGestionVentes,btnGestioContrats,btnGestionEntreprise,btnGestionParamètres);
@@ -401,22 +454,30 @@ public class AppliVAE extends Application {
         }
 
         public void afficheFenetreGestionUsers() {
-            this.btnDeleteUser = new Button("Supprimer l'utilisateur");
-            this.btnDeleteUser.setOnAction(new ControllerBtnDeleteUser(this, gestionUsers));
             this.table = new TableView<>();
             this.table.setOnMouseClicked(new ControllerLastUserSelected(this, table));
             this.tfSearch = new TextField("");
             this.tfSearch.setPromptText("Rechercher :");
-            this.tfSearch.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers));
-            this.btnEdit = new Button("Modifier");
-            this.btnEdit.setOnAction(new ControllerBtnEditUser(this,this.gestionUsers));
+            this.tfSearch.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers,this.listUtilisateursRecherchés));
 
             TableColumn<Utilisateur, Boolean> isActifCol = new TableColumn<>("Actif");
             isActifCol.setPrefWidth(80);
             isActifCol.setCellValueFactory(new PropertyValueFactory<>("actif"));
             setTableButtonAction(isActifCol);
+
+            try {
+                this.listUtilisateursRecherchés.clear(); // Effacer les données précédentes
+    
+                for (Utilisateur user : this.gestionUsers.getUtilisateurs()) {
+                    this.listUtilisateursRecherchés.add(user);
+                }
+                
+                setUtilisateursTable(this.listUtilisateursRecherchés);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             
-            Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh,this.btnEdit);
+            Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh,this.btnEdit,this.btnAddUser);
             this.scene.setRoot(root);
         }
 
@@ -426,21 +487,29 @@ public class AppliVAE extends Application {
         }
 
         public void afficheFenetreGestionVentes() {
-            this.btnDeleteVente = new Button("Supprimer l'utilisateur");
+            this.btnDeleteVente = new Button("Supprimer la vente");
             this.btnDeleteVente.setOnAction(new ControllerBtnDeleteUser(this, gestionUsers));
             this.tableVentes = new TableView<>();
             this.tableVentes.setOnMouseClicked(new ControllerLastUserSelected(this, table));
             this.tfSearchVente = new TextField("");
             this.tfSearchVente.setPromptText("Rechercher :");
-            this.tfSearchVente.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers));
+            this.tfSearchVente.setOnKeyReleased(new ControllerEnterRechecherUsers(this,this.gestionUsers,this.listUtilisateursRecherchés));
             this.btnEditVente = new Button("Modifier");
             this.btnEditVente.setOnAction(new ControllerBtnEditUser(this,this.gestionUsers));
+        
+            try {
+                this.listVentesRecherchees.clear(); // Effacer les données précédentes
 
-            TableColumn<Vente, Boolean> isActifColVente = new TableColumn<>("Actif");
-            isActifColVente.setPrefWidth(80);
-            isActifColVente.setCellValueFactory(new PropertyValueFactory<>("actif"));
+                for (Vente vente : this.gestionVentes.getVente()) {
+                    this.listVentesRecherchees.add(vente);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             
-            Pane root = new FenetreGestionVentes(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearchVente,this.btnSearchVente,this.tableVentes,this.gestionVentes,isActifColVente,this.btnDeleteVente,this.btnRefreshVente,this.btnEditVente);
+            setVentesTable(this.listVentesRecherchees);
+            
+            Pane root = new FenetreGestionVentes(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearchVente,this.btnSearchVente,this.tableVentes,this.gestionVentes,this.btnDeleteVente,this.btnRefreshVente,this.btnEditVente);
             this.scene.setRoot(root);
         }
 
@@ -472,7 +541,7 @@ public class AppliVAE extends Application {
                 Label id = new Label("ID : " + userSelected.getId());
                 Label username = new Label("Username : " + userSelected.getUsername());
                 Label email = new Label("Email : " + userSelected.getEmail());
-                Label role = new Label("Role : " + userSelected.getNomRole());
+                Label role = new Label("Role : " + userSelected.getRole().getNomRole());
 
                 infoUsers.getChildren().addAll(id, username, email, role);
                 alert.getDialogPane().setContent(infoUsers);
@@ -496,7 +565,7 @@ public class AppliVAE extends Application {
                 Label id = new Label("ID : " + userSelected.getId());
                 Label username = new Label("Username : " + userSelected.getUsername());
                 Label email = new Label("Email : " + userSelected.getEmail());
-                Label role = new Label("Role : " + userSelected.getNomRole());
+                Label role = new Label("Role : " + userSelected.getRole().getNomRole());
 
                 infoUsers.getChildren().addAll(id, username, email, role);
             } else{
@@ -522,7 +591,7 @@ public class AppliVAE extends Application {
             // ComboBox pour le changement de role
             this.cbEditRole = new ComboBox<>();
             this.cbEditRole.getItems().addAll("Administrateur", "Utilisateur");
-            if(userSelected.getNomRole().equals("Administrateur"))
+            if(userSelected.getRole().getNomRole().equals("Administrateur"))
                 this.cbEditRole.setValue("Administrateur");
             else{
                 this.cbEditRole.setValue("Utilisateur");
@@ -549,6 +618,77 @@ public class AppliVAE extends Application {
             // Vérifier si l'utilisateur a cliqué sur le bouton OK
             return result.isPresent() && result.get() == ButtonType.OK;
 
+        }
+
+        public boolean afficheFenetreAddUser() {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initOwner(stage);
+            alert.setTitle("Gestion Users");
+
+            VBox infoUsers = new VBox();
+            infoUsers.setPadding(new Insets(10, 10, 10, 10));
+
+            infoUsers.getChildren().addAll(new Label("Ajouter un utilisateur"));
+
+            alert.getDialogPane().setHeader(infoUsers);
+
+            // textField pour changer l'username
+            this.tfAddUsername = new TextField();
+            this.tfAddUsername.setPromptText("Username");
+
+            // textField pour changer l'email
+            this.tfAddEmail = new TextField();
+            this.tfAddEmail.setPromptText("Email");
+
+            // ComboBox pour le changement de role
+            this.cbAddRole = new ComboBox<>();
+            this.cbAddRole.getItems().addAll("Administrateur", "Utilisateur");
+            this.cbAddRole.setValue("Utilisateur");
+
+            this.pfAddPassword = new PasswordField();
+            this.pfAddPassword.setPromptText("Mot de passe");
+
+            // ajouter la combobox a la fenetre de dialogue
+            GridPane grid = new GridPane();
+            grid.setVgap(10);
+            grid.setHgap(10);
+            grid.add(new Label("Nom d'utilisateur :"), 0, 0);
+            grid.add(this.tfAddUsername, 1, 0);
+            grid.add(new Label("Email :"), 0, 1);
+            grid.add(this.tfAddEmail, 1, 1);
+            grid.add(new Label("Password :"), 0, 2);
+            grid.add(this.pfAddPassword, 1, 2);
+            grid.add(new Label("Role :"), 0, 3);
+            grid.add(this.cbAddRole, 1, 3);
+
+            alert.getDialogPane().setContent(grid);
+        
+            // Obtenir la réponse de l'utilisateur
+            Optional<ButtonType> result = alert.showAndWait();
+        
+            // Vérifier si l'utilisateur a cliqué sur le bouton OK
+            return result.isPresent() && result.get() == ButtonType.OK;
+        }
+
+        public String getAddUsername(){
+            return this.tfAddUsername.getText().toString();
+        }
+
+        public String getAddEmail(){
+            return this.tfAddEmail.getText().toString();
+        }
+
+        public Role getAddRole(){
+            if(this.cbAddRole.getValue().toString().equals("Administrateur")){
+                return new Role("Administrateur");
+            }
+            else{
+                return new Role("Utilisateur");
+            }
+        }
+
+        public String getAddPassword(){
+            return this.pfAddPassword.getText().toString();
         }
 
         public String getEditID(){
@@ -607,6 +747,10 @@ public class AppliVAE extends Application {
             this.table.setItems(utilisateurs);
         }
 
+        public void setVentesTable(ObservableList<Vente> ventes){
+            this.tableVentes.setItems(ventes);
+        }
+
         public void effacerTable(){
             this.table.getItems().clear();
         }
@@ -650,8 +794,14 @@ public class AppliVAE extends Application {
                                 Button button = new Button(item ? "Actif" : "Inactif");
                                 button.setMinWidth(70);
                                 setGraphic(button);
-                                Utilisateur utilisateur = getTableRow().getItem();
-                                button.setOnAction(new ControllerBtnActifUser(appliVAE, utilisateur, gestionUsers, table));
+                                try{
+                                    Utilisateur utilisateur = getTableRow().getItem();
+                                    if (utilisateur != null) {
+                                        button.setOnAction(new ControllerBtnActifUser(appliVAE, utilisateur, gestionUsers, table));
+                                    }
+                                }
+                                catch(Exception e){
+                                }
                             }
                         }
                     };
@@ -670,6 +820,11 @@ public class AppliVAE extends Application {
             this.lbNbTotVentes.setText(nbTotVentes);
             this.lbNbVentesValidée.setText(nbVentesValidee);
             this.lbNbVentesNonConclus.setText(nbVentesNonConclus);
+        }
+
+        public void afficheFenetreProfilVendeur(){
+            Pane root = new FenetreProfilVendeur(this.hyperlinkAccueil);
+            this.scene.setRoot(root);
         }
 
         public void quitte() {

@@ -7,13 +7,11 @@ import java.util.ArrayList;
 import Modele.Role;
 
 public class RoleBd {
-    private ConnexionMySQL laConnexion;
-    private Statement st;
-
-    public RoleBd(ConnexionMySQL laConnexion){
+    private Connection laConnexion;
+    public RoleBd(Connection laConnexion){
         this.laConnexion=laConnexion;
         try{
-            this.st=this.laConnexion.createStatement();
+            this.laConnexion.createStatement();
         }
         catch (Exception e){
             System.out.println(e);

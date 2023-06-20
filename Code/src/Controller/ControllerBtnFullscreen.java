@@ -8,7 +8,6 @@ import javafx.event.ActionEvent ;
 public class ControllerBtnFullscreen implements EventHandler<ActionEvent>{
     
     private Stage stage;
-    private boolean isFullscreen=true;
     
     public ControllerBtnFullscreen(Stage stage){
         this.stage = stage;
@@ -17,7 +16,10 @@ public class ControllerBtnFullscreen implements EventHandler<ActionEvent>{
     @Override
     public void handle(ActionEvent event){
         System.out.println("Bouton Fullscreen cliqué");
-        this.stage.setFullScreen(!this.isFullscreen);
-        this.isFullscreen=!this.isFullscreen;
+        if(stage.isFullScreen()){
+            this.stage.setFullScreen(false);
+        }else{
+            this.stage.setFullScreen(true);
+        }
     }
 }
