@@ -3,7 +3,7 @@ package Modele;
 public class Statut {
     private int idSt;
     private String nom;
-    private final static String[] NOMSTATUT_STRINGS = {"A venir","En cours","A valider","Validé","Non conclue"};
+    private final static String[] NOMSTATUT_STRINGS = {"A venir","En cours","A valider","Validée","Non conclue"};
     
     public Statut(int idSt, String nom) {
         this.idSt = idSt;

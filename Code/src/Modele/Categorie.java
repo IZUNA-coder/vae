@@ -1,7 +1,10 @@
 package Modele;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Categorie {
-    private final static String[] nomCategorie = {"Vêtement","Ustensile Cuisine","Meuble","Outil"};
+    public final static List<String> nomCategorie = Arrays.asList("Vêtement","Ustensile Cuisine","Meuble","Outil");
 
     private int identifiant;
     private String nom;
@@ -13,7 +16,12 @@ public class Categorie {
 
     public Categorie(int identifiant) {
         this.identifiant = identifiant;
-        this.nom = nomCategorie[identifiant-1];
+        this.nom = nomCategorie.get(identifiant-1);
+    }
+
+    public Categorie(String nom) {
+        this.nom = nom;
+        this.identifiant = nomCategorie.indexOf(nom)+1;
     }
 
     public int getIdentifiant() {

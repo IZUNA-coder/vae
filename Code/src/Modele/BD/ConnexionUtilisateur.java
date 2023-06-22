@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import Modele.Role;
 import Modele.Utilisateur;
 
 
@@ -75,5 +76,37 @@ public class ConnexionUtilisateur {
             return true;
         }
         return false;
+    }
+
+
+    public Utilisateur getUser(String username) {
+        if (this.connection == null) {
+            System.out.println("La connexion à la base de données n'est pas établie");
+            return null;
+        }
+
+        String query = "SELECT * FROM UTILISATEUR WHERE pseudout = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, username);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    Utilisateur user = new Utilisateur();
+                    user.setId(resultSet.getInt("idut"));
+                    user.setUsername(resultSet.getString("pseudout"));
+                    user.setEmail(resultSet.getString("emailut"));
+                    user.setPassword(resultSet.getString("mdput"));
+                    user.setActif(resultSet.getBoolean("activeut"));
+                    user.setRole(new Role(resultSet.getInt("idrole")));
+                    return user;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gérer les erreurs de requête ici
+        }
+
+        return null;
     }
 }

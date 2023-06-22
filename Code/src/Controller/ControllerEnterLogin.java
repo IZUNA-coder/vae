@@ -36,6 +36,8 @@ public class ControllerEnterLogin implements EventHandler<KeyEvent>{
             if(!connexionUtilisateur.checkDonnéeVide()){
                 if(connexionUtilisateur.connexionUtilisateur()){
                     System.out.println("Connexion réussie (user)");
+                    this.appli.setUser(connexionUtilisateur.getUser(username));
+                    this.appli.afficherChargement();
                     this.appli.afficheFenetreAccueil();
                 } else{
                     if(connexionUtilisateur.connexionAdmin()){

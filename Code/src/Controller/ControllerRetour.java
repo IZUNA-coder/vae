@@ -16,6 +16,6 @@ public class ControllerRetour implements EventHandler<ActionEvent>{
     @Override
     public void handle(ActionEvent event){
         System.out.println("Bouton Retour cliqué");
-        this.appli.afficheFenetreConnexion();
+        this.appli.afficheFenetreAccueil();
     }
 }

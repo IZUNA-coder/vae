@@ -2,8 +2,6 @@ package Vue.Administration;
 
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -38,7 +36,6 @@ public class FenetreGestionParametres extends BorderPane {
         titre.setId("titreModuleAdmin");
 
         this.btnDeconnexion.setId("btnDeconnexion");
-        this.btnDeconnexion.setGraphic(new ImageView(new Image("file:./ressources/graphics/user.png")));
 
         this.btnRetourAdmin.setId("btnRetourAdmin");
 

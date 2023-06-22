@@ -45,7 +45,6 @@ public class FenetreAdmin extends BorderPane {
         titre.setFont(Font.loadFont("file:./ressources/fonts/PlayfairDisplay.ttf", 50   ));
         titre.setId("titreModuleAdmin");
         this.btnDeconnexion.setId("btnDeconnexion");
-        this.btnDeconnexion.setGraphic(new ImageView(new Image("file:./ressources/graphics/user.png")));
         bp.setLeft(logo);
         bp.setCenter(titre);
         bp.setRight(this.btnDeconnexion);

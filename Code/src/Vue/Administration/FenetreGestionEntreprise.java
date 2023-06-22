@@ -49,7 +49,6 @@ public class FenetreGestionEntreprise extends BorderPane {
 
         this.btnDeconnexion.setId("btnDeconnexion");
         this.btnDeconnexion.setCursor(Cursor.HAND);
-        this.btnDeconnexion.setGraphic(new ImageView(new Image("file:./ressources/graphics/user.png")));
 
         bp.setLeft(logo);
         bp.setCenter(titre);

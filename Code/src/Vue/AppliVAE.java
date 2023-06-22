@@ -1,54 +1,26 @@
 package Vue;
 
-import Controller.ControleQuitter;
-import Controller.ControllerBtnAccueil;
-import Controller.ControllerBtnActifUser;
-import Controller.ControllerBtnAddUser;
-import Controller.ControllerBtnConnexion;
-import Controller.ControllerBtnCreerCompte;
-import Controller.ControllerBtnDeconnexion;
-import Controller.ControllerBtnDeleteUser;
-import Controller.ControllerBtnEditUser;
-import Controller.ControllerBtnFullscreen;
-import Controller.ControllerBtnMenuAdmin;
-import Controller.ControllerBtnProfil;
-import Controller.ControllerBtnProfilVendeur;
-import Controller.ControllerBtnVAE;
-import Controller.ControllerEnterCreerCompte;
-import Controller.ControllerLienInscription;
-import Controller.ControllerRechecheVentes;
-import Controller.ControllerRechecherUsers;
-import Controller.ControllerRetour;
-import Controller.ControllerRetourAdmin;
-import Modele.Role;
-import Modele.Utilisateur;
-import Modele.Vente;
-import Vue.Administration.FenetreAdmin;
-import Vue.Administration.FenetreGestionContrats;
-import Vue.Administration.FenetreGestionEntreprise;
-import Vue.Administration.FenetreGestionParametres;
-import Vue.Administration.FenetreGestionSignalements;
-import Vue.Administration.FenetreGestionUsers;
-import Vue.Administration.FenetreGestionVentes;
-import Controller.ControllerEnterLogin;
-import Controller.ControllerEnterRechecherUsers;
-import Controller.ControllerLastUserSelected;
-import Modele.BD.ConnexionMySQL;
-import Modele.BD.ConnexionUtilisateur;
-import Modele.BD.GestionUtilisateurs;
-import Modele.BD.GestionVentes;
-import Modele.BD.InscriptionUtilisateur;
+import Controller.*;
+import Modele.*;
+import Modele.BD.*;
+import Vue.Administration.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 // autres imports
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -59,6 +31,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -69,9 +42,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.Duration;
 
 public class AppliVAE extends Application {
 
@@ -111,9 +85,6 @@ public class AppliVAE extends Application {
     private Utilisateur dernierUserSelected;
     private Button btnEdit;
     private Button btnAddUser;
-    private Button btnVAE;
-    private Button btnProfil;
-    private ImageView img = new ImageView(new Image("file:ressources/img//PageAccueil/imgprofile.png"));
 
     // edit users
     private TextField tfEditID;
@@ -151,9 +122,17 @@ public class AppliVAE extends Application {
     //
     private Hyperlink hyperlinkAccueil;
     private Button profilVendeur;
+    private PhotoBD photoBD;
+
+    private Button btnVAE;
+    private Button btnProfil;
+    private Button btnVendre;
+
+
     //
 
     private AppliVAE appliVAE;
+    private List<Vente> listVentes;
     
     private Scene scene;
     private ConnexionMySQL connection;
@@ -163,6 +142,9 @@ public class AppliVAE extends Application {
     private Utilisateur utilisateur;
     private Stage stage;
 
+    private Button btnRetourConnexion;
+    private String recherche;
+    private TextField rechercheBar = new TextField();
     public static void main(String[] args) {
         launch(args);
     }
@@ -199,6 +181,39 @@ public class AppliVAE extends Application {
         return this.connection.getConnection();
     }
 
+    public void afficherChargement() {
+        // Créer une boîte de dialogue modale
+        Alert loadingDialog = new Alert(Alert.AlertType.INFORMATION);
+        loadingDialog.setTitle("Chargement en cours");
+        loadingDialog.setHeaderText("Chargement des données...");
+        loadingDialog.setContentText("Veuillez patienter...");
+        loadingDialog.initOwner(stage);
+
+        // Créer une barre de progression
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setPrefWidth(200);
+
+        // Ajouter la barre de progression à la boîte de dialogue
+        VBox dialogPane = new VBox(10, progressBar);
+        dialogPane.setAlignment(Pos.CENTER);
+        loadingDialog.getDialogPane().setContent(dialogPane);
+
+        // Afficher la boîte de dialogue
+        loadingDialog.show();
+
+        // Créer une animation de chargement pendant 3 secondes
+        Duration duration = Duration.seconds(3);
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(progressBar.progressProperty(), 0)),
+                new KeyFrame(duration, event -> {
+                    System.out.println("Chargement terminé");
+                    // Fermer la boîte de dialogue après 3 secondes
+                    loadingDialog.close();
+                }, new KeyValue(progressBar.progressProperty(), 1))
+        );
+        timeline.play();
+    }
+
     @Override
     public void init() {
         try {
@@ -216,6 +231,16 @@ public class AppliVAE extends Application {
         this.inscriptionUtilisateur = new InscriptionUtilisateur(utilisateur);
         this.gestionUsers = new GestionUtilisateurs(getConnection());
         this.gestionVentes= new GestionVentes(getConnection());
+        try {
+            this.gestionVentes.getVente();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        this.btnRetour = new Button("RETOUR");
+        this.btnRetour.setCursor(Cursor.HAND);
+        this.btnRetour.setId("btnRetour");
+        this.btnRetour.setOnAction(new ControllerRetour(this));
 
         //fenetre Connexion
 
@@ -247,8 +272,10 @@ public class AppliVAE extends Application {
 
         //fenetre Inscription
 
-        this.btnRetour = new Button("RETOUR");
-        this.btnRetour.setOnAction(new ControllerRetour(this));
+        this.btnRetourConnexion = new Button("RETOUR");
+        this.btnRetourConnexion.setCursor(Cursor.HAND);
+        this.btnRetourConnexion.setId("btnRetour");
+        this.btnRetourConnexion.setOnAction(new ControllerRetourConnexion(this));
 
         this.btnCreerCompte = new Button("CRÉER UN COMPTE"); // fini de remplir le formulaire d'inscription
         this.btnCreerCompte.setOnAction(new ControllerBtnCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur,this.gestionUsers));
@@ -256,7 +283,6 @@ public class AppliVAE extends Application {
         //fenetre Accueil
         this.btnDeconnexion = new Button("DÉCONNEXION");
         this.btnDeconnexion.setOnAction(new ControllerBtnDeconnexion(this));
-        this.gestionVentes = new Modele.BD.GestionVentes(getConnection());
 
         //fenetre Admin
         ControllerBtnMenuAdmin controllerBtnGestionAdmin = new ControllerBtnMenuAdmin(this,this.gestionUsers,this.gestionVentes);
@@ -284,10 +310,21 @@ public class AppliVAE extends Application {
 
         this.btnVAE = new Button("VAE");
         this.btnVAE.setOnAction(new ControllerBtnVAE(this));
-        this.btnProfil = new Button(null, this.img);
-        this.img.setFitHeight(50);
-        this.img.setFitWidth(50);
+        ImageView imgProfil = new ImageView(new Image("file:ressources/img/PageAccueil/imgprofile.png"));
+        this.btnProfil = new Button(null, imgProfil);
+        imgProfil.setFitHeight(50);
+        imgProfil.setFitWidth(50);
         this.btnProfil.setOnAction(new ControllerBtnProfil(this));
+        this.btnVAE.setCursor(Cursor.HAND);
+        this.btnProfil.setCursor(Cursor.HAND);
+
+        ImageView imgVendre = new ImageView(new Image("file:ressources/img/PageAccueil/btnVendre.png"));
+        this.btnVendre = new Button(null, imgVendre);
+        imgVendre.setFitHeight(50);
+        imgVendre.setFitWidth(50);
+        this.btnVendre.setOnAction(new ControllerBtnVendre(this));
+        this.btnVendre.setCursor(Cursor.HAND);
+
 
         // fenêtre Gestion Users
         this.btnSearch = new Button("OK");
@@ -351,6 +388,22 @@ public class AppliVAE extends Application {
 
         this.profilVendeur = new Button("Profil Vendeur");
         this.profilVendeur.setOnAction(new ControllerBtnProfilVendeur(this));
+        
+        this.photoBD = new PhotoBD(getConnection());
+        this.listVentes = new ArrayList<>();
+        
+        this.recherche = "";
+
+        try {
+            this.listVentes = gestionVentes.getVenteRecherche("");
+            System.out.println("Liste des ventes : " + this.listVentes);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        for(Vente v : this.listVentes){
+            this.photoBD.setPhoto(v);
+        }
     }
 
         @Override
@@ -365,15 +418,18 @@ public class AppliVAE extends Application {
             isActifCol.setCellValueFactory(new PropertyValueFactory<>("actif"));
             setTableButtonAction(isActifCol);
 
-            // Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh,this.btnEdit,this.btnAddUser);;
-            this.scene = new Scene(root, 1080, 720);
+            // Pane root = new FenetreGestionUsers(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearch,this.btnSearch,this.table,this.gestionUsers,isActifCol,this.btnDeleteUser,this.btnRefresh,this.btnEdit,this.btnAddUser);
+            // Pane root = new FenetreAccueil(this,utilisateur, gestionVentes, btnVAE, btnProfil, photoBD);
+            this.scene = new Scene(root, Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
+
             this.scene.getStylesheets().add("file:./ressources/css/styles.css");
             this.stage.setScene(scene);
-            this.stage.setFullScreen(true);
+            this.stage.setMaximized(true);
             this.stage.centerOnScreen();
             stage.getIcons().add(new Image("file:ressources/img/sells.png"));
             this.stage.setTitle("Appli VAE");
             this.stage.show();
+
 
             // Déplacer la logique du focus (éviter d'afficher le curseur dans le texfield, se qui cache le texte en background)
             Platform.runLater(() -> {
@@ -397,6 +453,8 @@ public class AppliVAE extends Application {
 
             this.showPassword = new CheckBox("Afficher le mot de passe");
             this.showPassword.setCursor(Cursor.HAND);
+            
+            
 
             Pane root = new FenetreConnexion(this.btnConnexion, this.btnQuitter, this.btnLienInscription, this.username, this.password,this.passwordMontrer,this.showPassword,this.btnFullscreen);
             this.scene.setRoot(root);
@@ -405,6 +463,8 @@ public class AppliVAE extends Application {
             Platform.runLater(() -> {
                 this.btnConnexion.requestFocus();
             });
+
+            
         }
         
         public void afficheFenetreInscription() {
@@ -422,7 +482,7 @@ public class AppliVAE extends Application {
             this.password2.setOnKeyReleased(new ControllerEnterCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur,this.gestionUsers));
             this.confirmPassword.setOnKeyReleased(new ControllerEnterCreerCompte(this,this.inscriptionUtilisateur,this.utilisateur,this.gestionUsers));
 
-            Pane root = new FenetreInscription(this.btnRetour, this.btnCreerCompte, this.username2,this.email,this.password2, this.confirmPassword,this.btnQuitter);
+            Pane root = new FenetreInscription(this.btnRetourConnexion, this.btnCreerCompte, this.username2,this.email,this.password2, this.confirmPassword,this.btnQuitter);
             this.scene.setRoot(root);
 
             // Déplacer la logique du focus (éviter d'afficher le curseur dans le texfield, se qui cache le texte en background)
@@ -439,17 +499,20 @@ public class AppliVAE extends Application {
 
         public void afficheFenetreAccueil(){
             // Affichage de la fenêtre d'accueil
-            Pane root = new FenetreAccueil(this.utilisateur, this.gestionVentes, this.btnVAE, this.btnProfil);
+
+            Pane root = new FenetreAccueil(this,this.utilisateur,this.gestionVentes,this.btnVAE,this.btnProfil,this.photoBD,this.btnVendre);
             this.scene.setRoot(root);
         }
-        public void afficheFenetreProfil() {
-            // Affichage de la fenêtre de profil
-            Pane root = new FenetreProfil(this.btnVAE);
-            this.scene.setRoot(root);
-        }
+
         public void afficheFenetreAdmin() {
             // Affichage de la fenêtre d'accueil
             Pane root = new FenetreAdmin(this.btnDeconnexion,this.btnGestionUsers,this.btnGestionSignalements,btnGestionVentes,btnGestioContrats,btnGestionEntreprise,btnGestionParamètres);
+            this.scene.setRoot(root);
+        }
+
+        public void afficheFenetreVendre() {
+            // Affichage de la fenêtre d'accueil
+            Pane root = new FenetreVendre(this.btnProfil,this.btnVAE,this.btnRetour);
             this.scene.setRoot(root);
         }
 
@@ -525,6 +588,30 @@ public class AppliVAE extends Application {
 
         public void afficheFenetreGestionParametres() {
             Pane root = new FenetreGestionParametres(this.btnDeconnexion,this.btnRetourAdmin);
+            this.scene.setRoot(root);
+        }
+
+        public void afficheFenetreRechercheEnchere(String newValue){
+            this.rechercheBar = new TextField();
+            Pane root = new FenetreRechercheEnchere(this,this.btnRetour, this.btnDeconnexion,this.gestionVentes,this.photoBD,rechercheBar,this.btnVendre,this.btnProfil,this.btnVAE);
+            this.scene.setRoot(root);
+            this.rechercheBar.setText(newValue);
+            remettreLeFocusNavBar();
+            
+        }
+
+        public void remettreLeFocusNavBar(){
+            this.rechercheBar.requestFocus();
+            this.rechercheBar.positionCaret(this.rechercheBar.getText().length());
+        }
+
+        public void afficheFenetreProfil(){
+            Pane root = new FenetreProfil(this.btnVAE);
+            this.scene.setRoot(root);
+        }
+
+        public void afficheFenetreObjAVendre(Vente v){
+            Pane root = new FenetreObjAVendre(this.btnRetour, v);
             this.scene.setRoot(root);
         }
 
@@ -827,10 +914,24 @@ public class AppliVAE extends Application {
             this.scene.setRoot(root);
         }
 
+        public void setRecherche(String text) {
+            this.recherche=text;
+        }
+
+        public String getRecherche() {
+            return this.recherche;
+        }
+
         public void quitte() {
             // Fermeture de l'application
             Platform.exit();
         }
 
-        
+        public Utilisateur getUtilisateur() {
+            return this.utilisateur;
+        }
+
+        public void setUser(Utilisateur user) {
+            this.utilisateur = user;
+        }
 }
