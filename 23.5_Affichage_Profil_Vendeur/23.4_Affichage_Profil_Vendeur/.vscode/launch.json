@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "AppliVAE",
+            "request": "launch",
+            "vmArgs": "--module-path /usr/share/openjfx/lib/ --add-modules javafx.controls,javafx.fxml",
+            "mainClass": "Vue.AppliVAE",
+            "projectName": "23.4_Affichage_Profil_Vendeur_239c6201"
+        },
+        {
+            "type": "java",
+            "name": "AppliVAE",
+            "request": "launch",
+            "vmArgs": "--module-path /usr/share/openjfx/lib/ --add-modules javafx.controls,javafx.fxml",
+            "mainClass": "Vue.AppliVAE",
+            "projectName": "23.2_ENCHERE_MAX_19451374"
+        }
+    ]
+}
