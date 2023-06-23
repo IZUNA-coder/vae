@@ -22,7 +22,7 @@ public class GestionVentes {
     }
 
     public void insereVente(Vente vente) throws SQLException{
-        PreparedStatement ps=this.laConnexion.prepareStatement("insert into OBJET  values (?,?,?,?,?)");
+        PreparedStatement ps=this.laConnexion.prepareStatement("insert into OBJET  values (?,?,?,?,?,?,?)");
         ps.setInt(1, vente.getIdentifiant());
         ps.setDouble(2, vente.getPrixBase());
         ps.setDouble(3, vente.getPrixMin());

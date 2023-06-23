@@ -145,6 +145,9 @@ public class AppliVAE extends Application {
     private Button btnRetourConnexion;
     private String recherche;
     private TextField rechercheBar = new TextField();
+    private ObjetBd objetBd;
+
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -231,6 +234,7 @@ public class AppliVAE extends Application {
         this.inscriptionUtilisateur = new InscriptionUtilisateur(utilisateur);
         this.gestionUsers = new GestionUtilisateurs(getConnection());
         this.gestionVentes= new GestionVentes(getConnection());
+        this.objetBd = new ObjetBd(getConnection());
         try {
             this.gestionVentes.getVente();
         } catch (SQLException e) {
@@ -933,5 +937,24 @@ public class AppliVAE extends Application {
 
         public void setUser(Utilisateur user) {
             this.utilisateur = user;
+        }
+
+        public void creationVente(String nom, Double prixDeBase, Double prixMinimum, LocalDate dateDebut, LocalDate dateFin, String descriptionObjet, String imagePath, int categorie, int statut){
+
+
+            int idObjet = this.objetBd.dernierId()+1;
+            System.out.println("idObjet : " + idObjet);
+            Objet objet = new Objet(idObjet,nom,descriptionObjet,this.getUtilisateur().getId(),categorie);
+
+            Vente vente = new Vente(1,prixDeBase,prixMinimum,Date.valueOf(dateDebut),Date.valueOf(dateFin),statut,objet);
+
+            try {
+                this.objetBd.insereObjet(objet);
+                gestionVentes.insereVente(vente);
+                System.out.println("Vente créée");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
 }
