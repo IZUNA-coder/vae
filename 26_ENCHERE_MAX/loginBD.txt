@@ -1,0 +1,13 @@
+Entrer vos données dans l'ordre suivant en laissant les virgules et pas d'espace au début
+
+nom du serveur
+nom de la BD
+login
+password
+
+-
+
+servinfo-mariadb,
+DBcoursimault,
+coursimault,
+coursimault,

@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "AppliVAE",
+            "request": "launch",
+            "mainClass": "Vue.AppliVAE",
+            "projectName": "26_ENCHERE_MAX_f2acfe76"
+        },
+        {
+            "type": "java",
+            "name": "AppliVAE",
+            "request": "launch",
+            "vmArgs": "--module-path /usr/share/openjfx/lib/ --add-modules javafx.controls,javafx.fxml",
+            "mainClass": "Vue.AppliVAE",
+            "projectName": "23.4_ENCHERE_MAX_f41522f9"
+        },
+        {
+            "type": "java",
+            "name": "AppliVAE",
+            "request": "launch",
+            "vmArgs": "--module-path c:/Java/javafx-sdk-20.0.1/lib/ --add-modules javafx.controls,javafx.fxml",
+            "mainClass": "Vue.AppliVAE",
+            "projectName": "23.4_ENCHERE_MAX_5209cf3a"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "AppliVAE",
+            "request": "launch",
+            "vmArgs": "--module-path c:/Java/javafx-sdk-20.0.1/lib/ --add-modules javafx.controls,javafx.fxml",
+            "mainClass": "Vue.AppliVAE",
+            "projectName": "23.3_ENCHERE_MAX"
+        }
+    ]
+}
