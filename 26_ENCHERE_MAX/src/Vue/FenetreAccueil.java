@@ -35,7 +35,17 @@ public class FenetreAccueil extends BorderPane {
     private PhotoBD photoBD;
     private Button btnVendre;
     private List<Vente> listRandomVentes;
-
+    /**
+     * Constructeur de la fenêtre d'accueil
+     * @param listRandomVentes
+     * @param enchereBd
+     * @param appliVAE
+     * @param utilisateur
+     * @param btnVAE
+     * @param btnProfil
+     * @param photoBD
+     * @param btnVendre
+     */
     public FenetreAccueil(List<Vente> listRandomVentes, EnchereBd enchereBd,AppliVAE appliVAE,Utilisateur utilisateur, Button btnVAE, Button btnProfil, PhotoBD photoBD, Button btnVendre) {
         super();
         this.appliVAE = appliVAE;
@@ -50,13 +60,19 @@ public class FenetreAccueil extends BorderPane {
         laPage();
         
     }
-
+    /**
+     * Initialise les composants de la fenêtre
+     */
     public void init() {
         this.btnVAE.setFont(Font.loadFont("file:ressources/fonts/PlayfairDisplay.ttf", 50));
         this.btnVAE.setStyle("-fx-background-color: transparent;");
         this.btnVendre.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20px;");
         this.btnProfil.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20px;");
     }
+    /**
+     * Méthode qui retourne le haut de la page 
+     * @return BorderPane
+     */
     public BorderPane hautDePage(){
         BorderPane top = new BorderPane();
         HBox boxBtn = new HBox();
@@ -70,6 +86,10 @@ public class FenetreAccueil extends BorderPane {
         BorderPane.setAlignment(top.getBottom(), Pos.CENTER);
         return top;
     }
+    /**
+     * Méthode qui retourne la barre de recherche
+     * @return StackPane
+     */
     public StackPane barreDeRecherche() {
         StackPane contientBarre = new StackPane();
         TextField recherche = new TextField();
@@ -99,6 +119,10 @@ public class FenetreAccueil extends BorderPane {
         contientBarre.getChildren().addAll(recherche, loupe);
         return contientBarre;
     }
+    /**
+     * Méthode qui retourne le centre haut de la page
+     * @return BorderPane
+     */
     public BorderPane hautDuCentre() {
         BorderPane topCenter = new BorderPane();
         topCenter.setPadding(new Insets(20,20,20,40));
@@ -113,13 +137,20 @@ public class FenetreAccueil extends BorderPane {
 
         return topCenter;
     }
+    /**
+     * Méthode qui retourne le centre de la page
+     * @return BorderPane
+     */
     public BorderPane centreDePage() {
         BorderPane center = new BorderPane();
         center.setTop(this.hautDuCentre());
         center.setCenter(this.contientBDREtSous());
         return center;
     }
-
+    /**
+     * Méthode qui créé le conteneur des enchères
+     * @return BorderPane
+     */
     public HBox lesEncheres() {
         HBox lesEncheres = new HBox();
         TilePane encheres = new TilePane();
@@ -209,12 +240,19 @@ public class FenetreAccueil extends BorderPane {
         encheres.setAlignment(Pos.CENTER);
         return lesEncheres;
     }
-    
+    /**
+     * Méthode qui retourne le conteneur des enchères et des sous catégories
+     * @return BorderPane
+     */
     public BorderPane contientBDREtSous() {
         BorderPane contient = new BorderPane();
         contient.setCenter(this.lesEncheres());
         return contient;
     }
+    /**
+     * Méthode qui fait les placement de la page
+     * @return void
+     */
     public void laPage() {
         this.setTop(this.hautDePage());
         this.setCenter(this.centreDePage());

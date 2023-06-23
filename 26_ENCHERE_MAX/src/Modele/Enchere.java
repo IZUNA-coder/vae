@@ -40,7 +40,14 @@ public class Enchere {
     public Objet getObjet() {
         return objet;
     }
-
+    /**
+     * Constructeur de la classe Enchere
+     * @param dateHeure
+     * @param prix
+     * @param utilisateur
+     * @param vente
+     * @param objet
+     */
     public Enchere(Date dateHeure, Double prix, Utilisateur utilisateur, Vente vente, Objet objet) {
         this.dateHeure = dateHeure;
         this.prix = prix;

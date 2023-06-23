@@ -16,7 +16,11 @@ public class PhotoBD {
 		
         
 	}
-
+    /**
+     * Insère une photo dans la BD
+     * @param idob
+     * @param lien
+     */
     public void insererPhoto(int idob, String lien){
         String query = "INSERT INTO PHOTO (idph, titreph, imgph, idob) VALUES (?, ?, ?, ?)";
         try{
@@ -30,7 +34,10 @@ public class PhotoBD {
             System.out.println(exep);
         }
     }
-
+    /**
+     * Permet de mettre une photo dans la BD
+     * @param v
+     */
     public void setPhoto(Vente v){
         String type = v.getObjet().getCategorie().getNom();
         int idob = v.getIdObjet();
@@ -70,7 +77,12 @@ public class PhotoBD {
             System.out.println(exep);
         }
     }
-    
+    /**
+     * Retourne l'url de la photo
+     * @param idob
+     * @return
+     * @throws SQLException
+     */
     public String getUrlPhoto(int idob) throws SQLException{
         String res="";
         PreparedStatement st = this.laConnexion.prepareStatement("SELECT imgph FROM PHOTO WHERE idob = ?");

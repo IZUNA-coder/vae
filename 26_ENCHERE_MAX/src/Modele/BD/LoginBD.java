@@ -9,7 +9,9 @@ public class LoginBD{
     private String nomBD;
     private String login;
     private String password;
-   
+    /**
+     * Constructeur de la classe LoginBD
+     */
     public LoginBD() {
         String filePath = "loginBD.txt";
         System.out.println("Traitement du fichier de configuration de la BD");

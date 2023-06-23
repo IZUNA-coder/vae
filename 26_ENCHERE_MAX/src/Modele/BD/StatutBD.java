@@ -17,12 +17,22 @@ public class StatutBD {
 		
         
 	}
+    /**
+     * Ajoute un statut dans la base de données
+     * @param statut
+     * @throws SQLException
+     */
     public void ajouteStatut(Statut statut)throws SQLException{
        PreparedStatement ps= this.laConnexion.prepareStatement("insert into STATUT values(?,?)");
         ps.setInt(1, statut.getIdentifiant());
         ps.setString(2, statut.getNom());
         ps.executeUpdate();
     }
+    /**
+     * Retourne la liste des statuts
+     * @return
+     * @throws SQLException
+     */
     public List<Statut> listeStatut() throws SQLException{
         ResultSet rs=this.laConnexion.prepareStatement("select * from STATUT").executeQuery();
         List<Statut> liste= new ArrayList<>();

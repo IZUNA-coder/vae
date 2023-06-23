@@ -43,7 +43,19 @@ public class FenetreObjet extends BorderPane {
     private GestionVentes gestionVentes;
     private PhotoBD photoBD;
 
-
+    /**
+     * Constructeur de la classe FenetreObjet
+     * @param btnProfil
+     * @param retour
+     * @param encherir
+     * @param voirProfil
+     * @param vente
+     * @param enchereBd
+     * @param photoBD
+     * @param gv
+     * @param btnVAE
+     * @param appli
+     */
     public FenetreObjet(Button btnProfil, Button retour, Button encherir, Hyperlink voirProfil, Vente vente,  EnchereBd enchereBd, PhotoBD photoBD,GestionVentes gv,Button btnVAE,AppliVAE appli){
         super();
         this.photoBD=photoBD;
@@ -71,13 +83,20 @@ public class FenetreObjet extends BorderPane {
         this.setCenter(centre());
 
     }
+    /**
+     * Permet de créer le haut de la page
+     * @return VBox
+     */
     public VBox enHaut(){
         VBox vb= new VBox();
         vb.getChildren().addAll(this.hautDePage());
         
         return vb;
     }
-
+    /**
+     * Permet de créer le haut de la page
+     * @return BorderPane
+     */
     public BorderPane hautDePage() {
         BorderPane top = new BorderPane();
         top.setLeft(this.btnVAE);
@@ -86,7 +105,10 @@ public class FenetreObjet extends BorderPane {
         top.setPadding(new Insets(25, 10, 25, 10));
         return top;
     }           
-    
+    /**
+     * Permet de créer le centre de la page
+     * @return BorderPane
+     */
     public BorderPane centre(){
         BorderPane bd= new BorderPane();
         bd.setTop(hautCentre());
@@ -99,14 +121,10 @@ public class FenetreObjet extends BorderPane {
         return bd;
 
     }
-    // public HBox auCentre(){
-    //     HBox h= new HBox();
-    //     h.getChildren().addAll(gaucheCentre(),droiteCentre());
-    //     h.setSpacing(500);
-    //     h.setAlignment(Pos.CENTER_LEFT);
-    //     return h;
-    // }
-
+    /**
+     * Permet de créer le centre haut de la page
+     * @return HBox
+     */
     public HBox hautCentre(){
         HBox hb= new HBox();
         Hyperlink encheres = new Hyperlink("Enchères");// créer une hyperlien
@@ -122,6 +140,10 @@ public class FenetreObjet extends BorderPane {
         hb.setAlignment(Pos.CENTER_LEFT);
         return hb;
     }
+    /**
+     * Permet de créer l'emplacemnt pour la partie gauche de la photo
+     * @return VBox
+     */
     public VBox gaucheCentre(){
         VBox v= new VBox();
         HBox h= new HBox();
@@ -170,10 +192,6 @@ public class FenetreObjet extends BorderPane {
         
         
 
-        
-
-
-
         //coeur
         ToggleButton btnFavori = new ToggleButton();
         btnFavori.setCursor(Cursor.HAND);
@@ -211,10 +229,11 @@ public class FenetreObjet extends BorderPane {
         v.setPadding(new Insets(0,0,0,100));
 
         return v;
-
-
     }
-   
+    /**
+     * Permet de créer l'emplacemnt pour la partie vendeur
+     * @return VBox
+     */
     public VBox vendeur(){
 
         VBox vbvendeur = new VBox();
@@ -226,8 +245,6 @@ public class FenetreObjet extends BorderPane {
         marteauVendeur.setPreserveRatio(true);
         this.voirProfil.setPadding(new Insets(0, 0, 0, 20));// top - right - bottom - left
         hbvendeur.getChildren().addAll(ven, marteauVendeur, this.voirProfil);
-
-
         
 
         HBox hbvendeur2 = new HBox();
@@ -244,14 +261,11 @@ public class FenetreObjet extends BorderPane {
 
        
         return vbvendeur;
-
-       
-        
     }
-
-    
-
-
+    /**
+     * Permet de créer l'emplacemnt pour la partie droite
+     * @return VBox
+     */
     public VBox droiteCentre(){
         VBox vb= new VBox();
         

@@ -17,7 +17,11 @@ public class RoleBd {
             System.out.println(e);
         }
     }
-
+    /**
+     * Insère un role dans la base de données
+     * @param role
+     * @throws SQLException
+     */
     public void insereRole(Role role) throws SQLException{
         PreparedStatement ps=this.laConnexion.prepareStatement("insert into ROLE  values (?,?)");
         ps.setInt(1, role.getIdRole());

@@ -19,7 +19,11 @@ public class EnchereBd {
             System.out.println(e);
         }
     }
-
+    /**
+     * Méthode qui permet d'insérer une enchère dans la base de données
+     * @param enchere
+     * @throws SQLException
+     */
     public void insereEnchere(Enchere enchere) throws SQLException{
         PreparedStatement ps=this.laConnexion.prepareStatement("insert into ENCHERIR  values (?,?,?,?)");
         ps.setInt(1, enchere.getUtilisateur().getId());
@@ -28,7 +32,11 @@ public class EnchereBd {
         ps.setDouble(4, enchere.getPrix());
         ps.executeUpdate();
     }
-
+    /**
+     * Permet de retourner une liste d'enchères
+     * @return
+     * @throws SQLException
+     */
     public List<Enchere> getEncheres() throws SQLException{
         PreparedStatement statement = this.laConnexion.prepareStatement("select * FROM ENCHERIR");
         ResultSet rs= statement.executeQuery();

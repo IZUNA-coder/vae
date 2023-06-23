@@ -9,6 +9,13 @@
             "name": "AppliVAE",
             "request": "launch",
             "mainClass": "Vue.AppliVAE",
+            "projectName": "26_ENCHERE_MAX_9798b34e"
+        },
+        {
+            "type": "java",
+            "name": "AppliVAE",
+            "request": "launch",
+            "mainClass": "Vue.AppliVAE",
             "projectName": "26_ENCHERE_MAX_f2acfe76"
         },
         {

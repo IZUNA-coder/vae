@@ -18,7 +18,12 @@ public class GestionUtilisateurs {
     public GestionUtilisateurs(Connection c){
         this.connection=c;
     }
-
+    /**
+     * Méthode qui retourne la liste des utilisateurs
+     * @param username
+     * @return
+     * @throws SQLException
+     */
     public ArrayList<Utilisateur> listeDesUtilisateurs(String username) throws SQLException {
         ArrayList<Utilisateur> liste = new ArrayList<>();
         String query = "SELECT * FROM UTILISATEUR WHERE pseudout LIKE ?";
@@ -41,7 +46,11 @@ public class GestionUtilisateurs {
         }
         return liste;
     }
-
+    /**
+     * Méthode qui permet de récupérer un utilisateur
+     * @return
+     * @throws SQLException
+     */
     public ArrayList<Utilisateur> getUtilisateurs() throws SQLException {
         ArrayList<Utilisateur> liste = new ArrayList<>();
         String query = "SELECT * FROM UTILISATEUR";
@@ -63,7 +72,12 @@ public class GestionUtilisateurs {
         }
         return liste;
     }
-
+    /**
+     * Méthode qui permet de savoir si le password est correct
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public boolean checkPassword(String password){
         int numbers = 0;
         if(password.length()<8){
@@ -80,7 +94,11 @@ public class GestionUtilisateurs {
         }
         return true;
     }
-
+    /**
+     * Permet de verifier l'adresse email
+     * @param email
+     * @return
+     */
     public boolean checkEmail(String email){
         // Pattern pour vérifier le format de l'adresse email
         String emailPattern = "^[A-Za-z][A-Za-z0-9._-]*@[A-Za-z0-9]+([.-][A-Za-z0-9]+)*\\.[A-Za-z]{2,}$";
@@ -90,7 +108,10 @@ public class GestionUtilisateurs {
         
         return matcher.matches();
     }
-
+    /**
+     * Méthode qui permet de suipprimer un utilisateur
+     * @param idUt
+     */
     public void supprimeUtilisateur(int idUt) {
         try {
             // 1. Supprimer toutes les enchères où l'utilisateur a enchéri
@@ -153,11 +174,12 @@ public class GestionUtilisateurs {
             // Gérer les erreurs de requête ici
         }
     }    
-
+    /**
+     * Permet d'ajouter un utilisateur
+     * @param user
+     * @return
+     */
     public boolean ajouterUtilisateur(Utilisateur user) {
-        // Ajouter l'utilisateur dans la base de données
-        // Utilisez votre logique de requête SQL pour effectuer l'insertion
-        // Retournez true si l'insertion est réussie, sinon retournez false
     
         if (this.connection == null) {
             System.out.println("La connexion à la base de données n'est pas établie");
@@ -206,7 +228,11 @@ public class GestionUtilisateurs {
         return false;
     }
 
-
+    /**
+     * Permet de mettre à jour le mot de passe d'un utilisateur
+     * @param utilisateurId
+     * @param newActifValue
+     */
     public void updateActifValue(int utilisateurId, boolean newActifValue) {
         // mettre à jour la valeur dans la base de données
         try {
@@ -223,7 +249,11 @@ public class GestionUtilisateurs {
             // Gestion des erreurs
         }
     }
-
+    /**
+     * Permet de savoir si un utilisateur existe déjà
+     * @param username
+     * @return true si l'utilisateur existe déjà, false sinon
+     */
     public boolean checkExistingUsername(String username) {
         // Vérifier si l'identifiant existe déjà dans la base de données
         // Utilisez votre logique de requête SQL pour effectuer la vérification
@@ -253,7 +283,11 @@ public class GestionUtilisateurs {
     
         return false;
     }
-
+    /**
+     * Permet de savoir si un email existe déjà
+     * @param email
+     * @return true si l'email existe déjà, false sinon
+     */
     public boolean checkExistingID(int idUser) {
         // Vérifier si l'identifiant existe déjà dans la base de données
         // Utilisez votre logique de requête SQL pour effectuer la vérification
@@ -283,7 +317,11 @@ public class GestionUtilisateurs {
     
         return false;
     }
-
+    /**
+     * Permet de savoir si un email existe déjà
+     * @param email
+     * @return true si l'email existe déjà, false sinon
+     */
     public boolean checkExistingEmail(String email) {
         // Vérifier si l'identifiant existe déjà dans la base de données
         // Utilisez votre logique de requête SQL pour effectuer la vérification
@@ -314,7 +352,11 @@ public class GestionUtilisateurs {
     
         return false;
     }
-
+    /**
+     * Permet de récupérer un utilisateur en fonction de son identifiant
+     * @param utilisateurId
+     * @return l'utilisateur correspondant à l'identifiant
+     */
     public int getNbTotUsers() {
         int res=0;
         String query = "SELECT count(idut) FROM UTILISATEUR";
@@ -356,7 +398,11 @@ public class GestionUtilisateurs {
         }
         return res;
     }
-
+    /**
+     * permet de modifier l'utillsateur
+     * @param idUser
+     * @param newUsername
+     */
     public void editUsername(int idUser,String newUsername){
         try {
             // Connexion à la base de données
@@ -372,7 +418,11 @@ public class GestionUtilisateurs {
             // Gestion des erreurs
         }
     }
-
+    /**
+     * permet de modifier le mail d'un utilisateur
+     * @param idUser
+     * @param newEmail
+     */
     public void editEmail(int idUser,String newEmail){
         try {
             // Connexion à la base de données
@@ -388,7 +438,11 @@ public class GestionUtilisateurs {
             // Gestion des erreurs
         }
     }
-
+    /**
+     * permet de modifier l'id d'un utilisateur
+     * @param idUser
+     * @param newId
+     */
     public void editId(int idUser,String newId){
         try {
             // Connexion à la base de données
@@ -404,7 +458,11 @@ public class GestionUtilisateurs {
             // Gestion des erreurs
         }
     }
-
+    /**
+     * permet de modifier le role d'un utilisateur
+     * @param idUser
+     * @param newRole
+     */
     public void editRole(int idUser,Role newRole){
         try {
             // Connexion à la base de données
@@ -420,7 +478,11 @@ public class GestionUtilisateurs {
             // Gestion des erreurs
         }
     }
-
+    /**
+     * permet de modifier le mot de passe d'un utilisateur
+     * @param id
+     * @param nouveauMDP
+     */
     public void editPassword(int id, String nouveauMDP) {
         try {
             // Connexion à la base de données

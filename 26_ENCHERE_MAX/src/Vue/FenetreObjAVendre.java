@@ -46,7 +46,16 @@ public class FenetreObjAVendre extends BorderPane{
     private int nbAutresEncheres = 30;
     private AppliVAE appli;
     private Label meilleurEnchere;
-    
+    /**
+     * Constructeur de la classe FenetreObjAVendre
+     * @param appli
+     * @param gestionVente
+     * @param vente
+     * @param btnRetour
+     * @param enchereBd
+     * @param photoBd
+     * @param voirProfil
+     */
     public FenetreObjAVendre(AppliVAE appli,GestionVentes gestionVente, Vente vente,Button btnRetour, EnchereBd enchereBd, PhotoBD photoBd, Hyperlink voirProfil){
         super();
         this.appli = appli;
@@ -64,7 +73,11 @@ public class FenetreObjAVendre extends BorderPane{
         this.ajouteCentreDroit();
         this.setPadding(new Insets(10, 50, 10, 10) );// top - right - bottom - left
     }
-
+    /**
+     * Méthode qui permet d'ajouter le haut du borderPane principale
+     * @param fenetre
+     * @return void
+     */
     public void ajouteTop(BorderPane bd) {
         //Création du bouton retour
         HBox hb = new HBox();
@@ -82,12 +95,18 @@ public class FenetreObjAVendre extends BorderPane{
         hb.setAlignment(Pos.CENTER_LEFT);
         bd.setTop(hb);
     }
+    /**
+     * Ajoute le centre du borderPane principale
+     */
     public void centre(){
         BorderPane bd = new BorderPane();
         bd.setLeft(ajouteCentreGauche(this));
         bd.setRight(ajouteCentreDroit());
         this.setCenter(bd);
     }
+    /**
+     * Méthode qui permet d'ajouter le bas du borderPane principale
+     */
     public void bas(){
         HBox hb = new HBox();
         VBox vb = new VBox();
@@ -195,7 +214,10 @@ public class FenetreObjAVendre extends BorderPane{
 
         this.setBottom(hb);
     }
-
+    /**
+     * Ajoute le centre droit de la fenêtre
+     * @return VBox
+     */
     private VBox ajouteCentreDroit() {
         VBox vb = new VBox();
         vb.setAlignment(Pos.CENTER);
@@ -204,7 +226,11 @@ public class FenetreObjAVendre extends BorderPane{
         return vb;
     }
 
-
+    /**
+     * Ajoute le centre gauche de la fenêtre
+     * @param bd
+     * @return VBox
+     */
     private VBox ajouteCentreGauche(BorderPane bd) {
         VBox vb = new VBox();
         vb.setPadding(new Insets(0,0,0,50));
@@ -289,7 +315,10 @@ public class FenetreObjAVendre extends BorderPane{
         return vb;
 
     }
-    
+    /**
+     * Permet d'ajouter la partie droite de la fenêtre
+     * @return
+     */
     public BorderPane ajouteDroite() {
         BorderPane gp = new BorderPane();
         gp.setPadding(new Insets(10, 10, 10, 10));
@@ -337,7 +366,11 @@ public class FenetreObjAVendre extends BorderPane{
         gp.setPadding(new Insets(75, 0, 0, 0));// top - right - bottom - left
         return gp;
     }
-
+    /**
+     * Permet d'ajouter la partie droite de la fenêtre
+     * @param vente
+     * @return GridPane
+     */
     public GridPane boiteDroite(Vente vente) {
         // Création de la GridPane
         GridPane gp = new GridPane();
@@ -377,11 +410,18 @@ public class FenetreObjAVendre extends BorderPane{
         return gp;
     }
 
-        //Setter qui permettrait de modifier le texte de la meilleure enchère par le nouveau montant
+    /**
+     * Permet de changer le texte de l'enchère max
+     * @return GridPane
+     */
     public void setTextEnchereMax(double montantNew){
         this.meilleurEnchere.setText("Meilleur enchère : " + montantNew + "€");
     }
-
+    /**
+     * Permet d'afficher un pop up pour l'acceptation de l'offre
+     * @param encheremax
+     * @return Alert
+     */
     public Alert popUpOffreAccepter(double encheremax){
         
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -396,7 +436,11 @@ public class FenetreObjAVendre extends BorderPane{
                 
         return alert;
     }
-
+    /**
+     * Permet d'afficher un pop up pour le refus de l'offre
+     * @param encheremax
+     * @return Alert
+     */
     public Alert popUpOffreRefuser(double encheremax){
         
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -411,11 +455,17 @@ public class FenetreObjAVendre extends BorderPane{
                 
         return alert;
     }
-
+    /**
+     * Permet de retourner le montant saisie par l'utilisateur
+     * @return double
+     */
     public double getMontantSaisie(){
         return Double.valueOf(this.montantTextField.getText());
     }
-
+    /**
+     * Permet de retourner la vente
+     * @return Vente
+     */
     public Vente getVente(){
         return this.vente;
     }

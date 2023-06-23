@@ -19,6 +19,10 @@ public class ConnexionUtilisateur {
     }
 
 
+    /**
+     * Permet de connecter un utilisateur
+     * @return un boolean
+     */
     public boolean connexionUtilisateur() {
         if (this.connection == null) {
             System.out.println("La connexion à la base de données n'est pas établie");
@@ -45,6 +49,10 @@ public class ConnexionUtilisateur {
         return false;
     }
 
+    /**
+     * Permet de connecter un administrateur
+     * @return un boolean
+     */
     public boolean connexionAdmin() {
         if (this.connection == null) {
             System.out.println("La connexion à la base de données n'est pas établie");
@@ -71,6 +79,10 @@ public class ConnexionUtilisateur {
         return false;
     }
 
+    /**
+     * Permet de vérifier que les données ne sont pas vides
+     * @return un boolean
+     */
     public boolean checkDonnéeVide(){
         if(user.getUsername().isEmpty() || user.getPassword().isEmpty()){
             return true;
@@ -79,6 +91,10 @@ public class ConnexionUtilisateur {
     }
 
 
+    /**
+     * Permet d'obtenir un utilisateur grêce à son username
+     * @return un Utilisateur
+     */
     public Utilisateur getUser(String username) {
         if (this.connection == null) {
             System.out.println("La connexion à la base de données n'est pas établie");

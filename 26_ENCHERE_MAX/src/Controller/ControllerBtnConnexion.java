@@ -29,11 +29,11 @@ public class ControllerBtnConnexion implements EventHandler<ActionEvent>{
 
         this.user.setUsername(username);
         this.user.setPassword(password);
+        this.appli.setUser(connexionUtilisateur.getUser(username));
 
         if(!connexionUtilisateur.checkDonnéeVide()){
             if(connexionUtilisateur.connexionUtilisateur()){
                 System.out.println("Connexion réussie (user)");
-                this.appli.setUser(connexionUtilisateur.getUser(username));
                 this.appli.afficherChargement();
                 this.appli.chargerDonnees();
                 this.appli.afficheFenetreAccueil();

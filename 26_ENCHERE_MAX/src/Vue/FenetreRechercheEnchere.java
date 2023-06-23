@@ -53,7 +53,19 @@ public class FenetreRechercheEnchere extends BorderPane {
     private Button btnVendre;
     private List<RadioButton> filtreCateg;
     private EnchereBd enchereBd;
-
+    /**
+     * Constructeur de la classe FenetreRechercheEnchere
+     * @param appli
+     * @param btnRetour
+     * @param btnDeco
+     * @param gestionVentes
+     * @param photoBD
+     * @param navBar
+     * @param btnVendre
+     * @param btnProfil
+     * @param btnVAE
+     * @param enchereBd
+     */
     public FenetreRechercheEnchere(AppliVAE appli, Button btnRetour, Button btnDeco, GestionVentes gestionVentes, PhotoBD photoBD, TextField navBar, Button btnVendre,Button btnProfil,Button btnVAE,EnchereBd enchereBd) {
         super();
         this.init(appli, btnRetour, btnDeco, gestionVentes, photoBD,navBar,btnVendre,btnProfil,btnVAE,enchereBd);
@@ -69,7 +81,19 @@ public class FenetreRechercheEnchere extends BorderPane {
         this.setTop(this.hautDePage());
         this.setCenter(this.pagePrincipal(listeVente,this.appli.getRecherche()));
     }
-
+    /**
+     * Initialisation de la vue principale
+     * @param appli
+     * @param btnRetour
+     * @param btnDeco
+     * @param gestionVentes
+     * @param photoBD
+     * @param navBar
+     * @param btnVendre
+     * @param btnProfil
+     * @param btnVAE
+     * @param enchereBd
+     */
     public void init(AppliVAE appli, Button btnRetour, Button btnDeco, GestionVentes gestionVentes, PhotoBD photoBD, TextField navBar,Button btnVendre, Button btnProfil,Button btnVAE,EnchereBd enchereBd) {
         this.btnRetour = btnRetour;
         this.btnVendre = btnVendre;
@@ -126,7 +150,12 @@ public class FenetreRechercheEnchere extends BorderPane {
         this.btnProfil.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20px;");
 
     }
-
+    /**
+     * Retourne le haut de la page
+     * @param listeVente
+     * @param recherche
+     * @return BorderPane
+     */
     private BorderPane pagePrincipal(List<Vente> listeVente, String recherche) {
         BorderPane page = new BorderPane();
         page.setPadding(new Insets(20, 20, 20, 20));
@@ -143,7 +172,11 @@ public class FenetreRechercheEnchere extends BorderPane {
 
         return page;
     }
-
+    /**
+     * Permet d'afficher les résultats de la recherche
+     * @param listeVente
+     * @return ScrollPane
+     */
     private ScrollPane pageResultat(List<Vente> listeVente) {
         ScrollPane page = new ScrollPane();
         // retirer l'affichage de la scrollbar verticale
@@ -170,7 +203,11 @@ public class FenetreRechercheEnchere extends BorderPane {
 
         return page;
     }
-
+    /**
+     * Permet de créer un affichage pour une vente
+     * @param v
+     * @return GridPane
+     */
     public GridPane creerAffichageVente(Vente v) {
         GridPane encHBox = new GridPane();
         encHBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 20px; -fx-border-color: black; -fx-border-radius: 1em;");
@@ -244,7 +281,10 @@ public class FenetreRechercheEnchere extends BorderPane {
 
         return encHBox;
     }
-
+    /**
+     * Permet de créer le menu de gauche
+     * @return VBox
+     */
     private VBox menuGauche() {
         VBox menu = new VBox();
         ScrollPane menuScroll = new ScrollPane();
@@ -262,7 +302,10 @@ public class FenetreRechercheEnchere extends BorderPane {
 
         return menu;
     }
-
+    /**
+     * Permet de créer le menu de filtre
+     * @return VBox
+     */
     public VBox menuFiltre() {
         VBox menuFiltre = new VBox();
         menuFiltre.setSpacing(20);
@@ -339,7 +382,10 @@ public class FenetreRechercheEnchere extends BorderPane {
 
         return menuFiltre;
     }
-
+    /**
+     * Permet de créer le haut de la page
+     * @return BorderPane
+     */
     public BorderPane hautDePage(){
         BorderPane top = new BorderPane();
         HBox boxBtn = new HBox();
@@ -353,7 +399,10 @@ public class FenetreRechercheEnchere extends BorderPane {
         BorderPane.setAlignment(top.getBottom(), Pos.CENTER);
         return top;
     }
-
+    /**
+     * Permet de créer la barre de recherche
+     * @return StackPane
+     */
     public StackPane barreDeRecherche() {
         StackPane contientBarre = new StackPane();
         this.recherche.setPromptText("Rechercher par nom d'objet");
@@ -379,16 +428,25 @@ public class FenetreRechercheEnchere extends BorderPane {
         contientBarre.getChildren().addAll(this.recherche, loupe);
         return contientBarre;
     }
-
+    /**
+     * Permet de mettre a jour le resultat de la recherche
+     * @return BorderPane
+     */
     public void mettreAJourResultats(List<Vente> listeVente, String recherche) {
 
         this.setCenter(this.pagePrincipal(listeVente,recherche));
     }
-
+    /**
+     * Permet de modifier la barre de recherche
+     * @param text
+     */
     public void setTextNavBar(String text){
         this.recherche.setText(text);
     }
-
+    /**
+     * Permet de récupérer le texte de la barre de recherche
+     * @return String
+     */
     public String getTextNavBar(){
         return this.recherche.getText();
     }

@@ -8,6 +8,10 @@ import Modele.Objet;
 
 public class ObjetBd {
     private Connection laConnexion;
+    /**
+     * Constructeur de la classe ObjetBd
+     * @param laConnexion
+     */
     public ObjetBd(Connection laConnexion){
         this.laConnexion=laConnexion;
         try{
@@ -17,7 +21,11 @@ public class ObjetBd {
             System.out.println(e);
         }
     }
-
+    /**
+     * Insère un objet dans la base de données
+     * @param objet
+     * @throws SQLException
+     */
     public void insereObjet(Objet objet) throws SQLException{
         // récuperer id max de la table vente
         PreparedStatement ps2=this.laConnexion.prepareStatement("select max(idob) from OBJET");
@@ -47,32 +55,16 @@ public class ObjetBd {
             String description=rs.getString("descriptionob");
             int idut=rs.getInt("idut");
             int idcat=rs.getInt("idcat");
-            
-            // UtilisateurBd utilBd=new UtilisateurBd(laConnexion);
-            // List<Utilisateur> listeUtil = utilBd.getUtilisateurs();
-            // Utilisateur utili=null;
-            // for (Utilisateur util : listeUtil){
-            //     if (util.getId()==idut){
-            //         System.out.println(idut);
-            //         utili=util;
-            //     }
-            // }
-
-            // CategorieBD catBd=new CategorieBD(laConnexion);
-            // List<Categorie> listeCategories = catBd.listeCategories();
-            // Categorie cate=null;
-            // for (Categorie cat : listeCategories){
-            //     if (cat.getIdentifiant()==idcat){
-            //         cate=cat;
-            //     }
-            // }
 
             Objet obj= new Objet(id, nom, description, idut, idcat);
             liste.add(obj);
         }
         return liste;
     }
-
+    /**
+     * Retourne le dernier id de la table objet
+     * @return int
+     */
     public int dernierId(){
 
         try{

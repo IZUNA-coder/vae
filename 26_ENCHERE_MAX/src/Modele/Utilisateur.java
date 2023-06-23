@@ -17,7 +17,15 @@ public class Utilisateur {
         this.actif=true;
         this.role=new Role(2);
     }
-
+    /**
+     * Constructeur de la classe Utilisateur
+     * @param id
+     * @param username
+     * @param email
+     * @param password
+     * @param actif
+     * @param role
+     */
     public Utilisateur(int id,String username,String email,String password,boolean actif,Role role){
         this.id=id;
         this.username=username;
@@ -26,7 +34,15 @@ public class Utilisateur {
         this.actif=actif;
         this.role=role;
     }
-    
+    /**
+     * Constructeur de la classe Utilisateur
+     * @param id
+     * @param username
+     * @param email
+     * @param password
+     * @param actif
+     * @param idRole
+     */
     public Utilisateur(int id,String username,String email,String password,boolean actif,int idRole){
         this.id=id;
         this.username=username;

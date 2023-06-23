@@ -32,7 +32,17 @@ public class FenetreConnexion extends BorderPane {
     private TextField passwordMontrer;
     private CheckBox showPassword;
     private Button btnFullscreen;
-    
+    /**
+     * Constructeur de la fenêtre de connexion
+     * @param btnConnexion
+     * @param btnQuitter
+     * @param btnInscire
+     * @param id
+     * @param password
+     * @param passwordMontrer
+     * @param showPassword
+     * @param btnFullscreen
+     */
     public FenetreConnexion(Button btnConnexion, Button btnQuitter, Button btnInscire,TextField id,PasswordField password,TextField passwordMontrer,CheckBox showPassword,Button btnFullscreen){
         super();
         this.id = id;
@@ -68,7 +78,10 @@ public class FenetreConnexion extends BorderPane {
         });
     }
     
-    
+    /**
+     * Méthode qui retourne le centre de la fenêtre de connexion
+     * @return VBox
+     */
     private VBox center() {
         VBox vb = new VBox();
         this.setId("fenetreConnexion");

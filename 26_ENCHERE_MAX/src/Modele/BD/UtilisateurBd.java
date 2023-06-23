@@ -19,7 +19,11 @@ public class UtilisateurBd {
             System.out.println(e);
         }
     }
-
+    /**
+     * Insère un utilisateur dans la base de données
+     * @param util
+     * @throws SQLException
+     */
     public void insereUtilisateur(Utilisateur util) throws SQLException{
         PreparedStatement ps=this.laConnexion.prepareStatement("insert into UTILISATEUR  values (?,?,?,?,?,?)");
         ps.setInt(1, util.getId());
@@ -36,7 +40,11 @@ public class UtilisateurBd {
         
         ps.executeUpdate();
     }
-
+    /**
+     * Retourne la liste des utilisateurs de la base de données
+     * @return
+     * @throws SQLException
+     */
     public List<Utilisateur> getUtilisateurs() throws SQLException{
         ResultSet rs= this.laConnexion.prepareStatement("select * from UTILISATEUR").executeQuery();
         List<Utilisateur> liste=new ArrayList<>();

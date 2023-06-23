@@ -14,7 +14,10 @@ public class InscriptionUtilisateur {
         this.user=u;
     }
 
-
+    /**
+     * Vérifie si le mot de passe est assez long et contient au moins un chiffre
+     * @return
+     */
     public boolean checkPassword(){
         String password = user.getPassword();
         int numbers = 0;
@@ -32,14 +35,20 @@ public class InscriptionUtilisateur {
         }
         return true;
     }
-
+    /**
+     * Vérifie si les données sont vides
+     * @return
+     */
     public boolean checkDonnéeVide(){
         if(user.getUsername().isEmpty() || user.getPassword().isEmpty() || user.getEmail().isEmpty()){
             return true;
         }
         return false;
     }
-
+    /**
+     * Vérifie si l'adresse email est valide
+     * @return
+     */
     public boolean checkEmail(){
         String email = user.getEmail();
         // Pattern pour vérifier le format de l'adresse email

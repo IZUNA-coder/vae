@@ -21,7 +21,11 @@ public class GestionVentes {
             System.out.println(e);
         }
     }
-
+    /**
+     * Méthode qui permet d'insérer une vente dans la base de données a partir d'une vente
+     * @param vente
+     * @throws SQLException
+     */
     public void insereVente(Vente vente) throws SQLException{
         PreparedStatement ps=this.laConnexion.prepareStatement("insert into VENTE values (?,?,?,?,?,?,?)");
         // récuperer id max de la table vente
@@ -201,7 +205,9 @@ public class GestionVentes {
         return liste;
     }
 
-    /* retourne true si la vente est dans les favoris de l'utilisateur, false sinon*/
+    /**
+     * Vérifie si une vente est dans les favoris d'un utilisateur
+     */
     public boolean estFavoris(int idUt, int idVente) throws SQLException {
         PreparedStatement ps = this.laConnexion.prepareStatement("SELECT * FROM FAVORIS WHERE idut = ? AND idve = ?");
         ps.setInt(1, idUt);
@@ -310,7 +316,11 @@ public class GestionVentes {
         ps1.setInt(1, idVente);
         ps1.executeUpdate();
     }
-
+    /**
+     * Regarde si un id est existant 
+     * @param idVe
+     * @return
+     */
     public boolean checkExistingID(int idVe) {
         // Vérifier si l'identifiant existe déjà dans la base de données
         // Utilisez votre logique de requête SQL pour effectuer la vérification
@@ -340,13 +350,21 @@ public class GestionVentes {
     
         return false;
     }
-
+    /**
+     * Permet de supprimer les encheres liées à une vente
+     * @param idVente
+     * @throws SQLException
+     */
     public void supprimerEnchereVente(int idVente) throws SQLException {
         PreparedStatement ps = this.laConnexion.prepareStatement("DELETE FROM ENCHERIR WHERE idve = ?");
         ps.setInt(1, idVente);
         ps.executeUpdate();
     }
-
+    /**
+     * Permet de modifier l'id d'une vente
+     * @param idVe
+     * @param newId
+     */
     public void editId(int idVe,int newId){
         try {
             // Connexion à la base de données
@@ -364,7 +382,11 @@ public class GestionVentes {
             // Gestion des erreurs
         }
     }
-
+    /**
+     * Permet de modifier le prix de base d'une vente
+     * @param idVe
+     * @param prixBase
+     */
     public void editPrixBase(int idVe, Double prixBase) {
         try {
             // Connexion à la base de données
@@ -382,7 +404,11 @@ public class GestionVentes {
             // Gestion des erreurs
         }
     }
-
+    /**
+     * Permet de modifier le prix minimum d'une vente
+     * @param idVe
+     * @param prixMin
+     */
     public void editPrixMin(int idVe, Double prixMin) {
         try {
             // Connexion à la base de données
@@ -400,7 +426,11 @@ public class GestionVentes {
             // Gestion des erreurs
         }
     }
-
+    /**
+     * Permet de modifier le status d'une vente
+     * @param idVe
+     * @param idStatut
+     */
     public void editIdStatut(int idVe, int idStatut) {
         try {
             // Connexion à la base de données
@@ -418,7 +448,11 @@ public class GestionVentes {
             // Gestion des erreurs
         }
     }
-
+    /**
+     * Permet de modifier l'id d'un objet
+     * @param idVe
+     * @param idObj
+     */
     public void editIdObj(int idVe, int idObj) {
         try {
             // Connexion à la base de données
@@ -437,7 +471,11 @@ public class GestionVentes {
         }
 
     }
-
+    /**
+     * Permet de modifier la nom de l'objet
+     * @param idVe
+     * @param nomObj
+     */
     public void editNomObj(int idVe, String nomObj) {
         try {
             // Connexion à la base de données

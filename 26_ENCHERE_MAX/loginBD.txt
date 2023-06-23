@@ -7,7 +7,7 @@ password
 
 -
 
-servinfo-mariadb,
-DBcoursimault,
-coursimault,
-coursimault,
+localhost,
+VAE,
+root,
+Matthias_crx1,

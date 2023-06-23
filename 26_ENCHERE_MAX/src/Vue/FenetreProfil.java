@@ -28,7 +28,18 @@ public class FenetreProfil extends BorderPane {
     private Button btnModifierMail;
     private Button btnSupprimerCompte;
     private Button btnDeconnexion;
-
+    /**
+     * Constructeur de la fenetre profil
+     * @param btnVAE
+     * @param tfPseudo
+     * @param tfMDP
+     * @param tfMail
+     * @param btnModifierPseudo
+     * @param btnModifierMDP
+     * @param btnModifierMail
+     * @param btnSupprimerCompte
+     * @param btnDeconnexion
+     */
     public FenetreProfil(Button btnVAE, TextField tfPseudo, TextField tfMDP, TextField tfMail, Button btnModifierPseudo, Button btnModifierMDP, Button btnModifierMail, Button btnSupprimerCompte, Button btnDeconnexion){
         super();
         this.btnVAE = btnVAE;
@@ -45,12 +56,17 @@ public class FenetreProfil extends BorderPane {
         //ne pas mettre le cursor dans un textfield au lancement de la fenetre
         this.tfPseudo.setFocusTraversable(false);
     }
-
+    /**
+     * Permet d'initialiser la page
+     */
     public void init() {
         this.coteGauche = new BorderPane();
         this.coteDroit = new BorderPane();
     }
-
+    /**
+     * Permet de mettre en place la page
+     * @return HBox
+     */
     public HBox hautCoteGauche() {
         HBox top = new HBox();
         HBox contientTitre = new HBox();
@@ -62,48 +78,75 @@ public class FenetreProfil extends BorderPane {
         top.setSpacing(430);
         return top;
     }
-
+    /**
+     * Permet de d'ajouter le pseudo
+     * @return Label
+     */
     public Label pseudo() {
         Label pseudo = new Label("Nom d'utilisateur");
         pseudo.setFont(Font.loadFont("file:./ressources/fonts/PlayfairDisplay.ttf", 20));
         return pseudo;
     }
-
+    /**
+     * Permt de retourner le textfield du pseudo
+     * @return TextField
+     */
     public TextField tfPseudo() {
         return this.tfPseudo;
     }
-
+    /**
+     * Permet de retourner le bouton de modification du pseudo
+     * @return Button
+     */
     public Button modifier() {
         Button modifier = new Button("MODIFIER");
         modifier.setFont(Font.loadFont("file:./ressources/fonts/PlayfairDisplay.ttf", 20));
         modifier.setStyle("-fx-background-color: #51E679; -fx-text-fill: #FFFFFF; -fx-background-radius: 10px; -fx-font-weight: bolder; -fx-font-size: 25px;");
         return modifier;
     }
-
+    /**
+     * Permet de retourner le lable pour créer l'espace du mot de passe 
+     * @return Button
+     */
     public Label mdp() {
         Label mdp = new Label("Mot de passe");
         mdp.setFont(Font.loadFont("file:./ressources/fonts/PlayfairDisplay.ttf", 20));
         return mdp;
     }
-
+    /**
+     * Permet de retourner le textfield du mot de passe
+     * @return TextField
+     */
     public TextField tfMDP() {
         return this.tfMDP;
     }
-
+    /**
+     * Permet de retourner le label pour le mail
+     * @return
+     */
     public Label Mail() {
         Label mail = new Label("Mail");
         mail.setFont(Font.loadFont("file:./ressources/fonts/PlayfairDisplay.ttf", 20));
         return mail;
     }
-
+    /**
+     * Permet de retourner le textfield du mail
+     * @return TextField
+     */
     public TextField tfMail() {
         return this.tfMail;
     }
-
+    /**
+     * Permet de retourner le bouton supprimer le compte
+     * @return Button
+     */
     public Button supprimerLeCompte() {
         return this.btnSupprimerCompte;
     }
-
+    /**
+     * Permet de créer l'espace informations utilisateur
+     * @return Button
+     */
     public VBox informationsUtilisateur() {
         this.lesInfos = new VBox();
         GridPane infos = new GridPane();
@@ -129,7 +172,10 @@ public class FenetreProfil extends BorderPane {
         this.lesInfos.setAlignment(Pos.CENTER);
         return this.lesInfos;
     }
-
+    /**
+     * Permet de créer le centre gauche de la page
+     * @return VBox
+     */
     public VBox centreCoteGauche() {
         VBox centre = new VBox();
         centre.setSpacing(10);
@@ -141,14 +187,20 @@ public class FenetreProfil extends BorderPane {
         centre.setPrefHeight(300);
         return centre;
     }
-
+    /**
+     * Permet de créer le côté gauche de la page
+     * @return BorderPane
+     */
     public BorderPane coteGauchePage() {
         this.coteGauche.setCenter(this.centreCoteGauche());
         this.coteGauche.setTop(this.hautCoteGauche());
         this.coteGauche.setPrefWidth(1200);
         return this.coteGauche;
     }
-
+    /**
+     * Permet de créer un affichage pour l'engrenage
+     * @return HBox
+     */
     public HBox contientEngrenage() {
         HBox contientEngrenage = new HBox();
         ImageView engrenage = new ImageView(new Image("file:./ressources/img/engrenage.png"));
@@ -159,6 +211,10 @@ public class FenetreProfil extends BorderPane {
         contientEngrenage.setPadding(new Insets(25, 0, 0, 0));
         return contientEngrenage;
     }
+    /**
+     * Permet de créer l'emplacement pour les boutons su milieu
+     * @return VBox
+     */
     public VBox boutonsDuMilieu() {
         VBox boutons = new VBox();
         boutons.setSpacing(25);
@@ -179,7 +235,10 @@ public class FenetreProfil extends BorderPane {
         boutons.setAlignment(Pos.CENTER);
         return boutons;
     }
-
+    /**
+     * Permet de créer l'emplacement pour le bouton de déconnexion
+     * @return HBox
+     */
     public HBox deconnexion() {
         HBox contientDeconnexion = new HBox();
         contientDeconnexion.getChildren().add(this.btnDeconnexion);
@@ -187,7 +246,10 @@ public class FenetreProfil extends BorderPane {
         contientDeconnexion.setPadding(new Insets(10));
         return contientDeconnexion;
     }
-
+    /**
+     * Permet de créer le côté droit de la page
+     * @return BorderPane
+     */
     public BorderPane coteDroitPage() {
         this.coteDroit.setTop(this.contientEngrenage());
         this.coteDroit.setCenter(this.boutonsDuMilieu());
@@ -197,7 +259,9 @@ public class FenetreProfil extends BorderPane {
         this.coteDroit.setStyle("-fx-background-color: #D3D3D3; -fx-background-radius: 10px; -fx-opacity: 0.8;");
         return this.coteDroit;
     }
-
+    /**
+     * Permet de créer la page
+     */
     public void laPage() {
         this.setLeft(this.coteGauchePage());
         this.setRight(this.coteDroitPage());

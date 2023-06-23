@@ -17,6 +17,11 @@ public class CategorieBD {
 		
         
 	}
+
+    /**
+     * Permet d'inserer une catégorie dans la base de donnée
+     * @param Categorie
+     */
     public void insereCategorie(Categorie cat)throws SQLException {
             PreparedStatement ps= this.laConnexion.prepareStatement("insert into CATEGORIE values (?,?)");
             ps.setInt(1, cat.getIdentifiant());
@@ -24,6 +29,9 @@ public class CategorieBD {
             ps.executeQuery();
     }
 
+    /**
+     * Permet de récuperer la liste des categorie de la base de données
+     */
     public List<Categorie> listeCategories()throws SQLException{
         ResultSet rs= this.laConnexion.prepareStatement("select * from CATEGORIE").executeQuery();
         List<Categorie> liste= new ArrayList<>();

@@ -36,7 +36,14 @@ public class FenetreProfilVendeur extends BorderPane {
     private PhotoBD photoBd;
     private GestionVentes gestionVentes;
 
-
+    /**
+     * Constructeur de la classe FenetreProfilVendeur
+     * @param hyperlinkAccueil
+     * @param btnRetour
+     * @param vendeur
+     * @param photoBd
+     * @param gestionVentes
+     */
     public FenetreProfilVendeur(Hyperlink hyperlinkAccueil, Button btnRetour, Utilisateur vendeur, PhotoBD photoBd, GestionVentes gestionVentes) {
         super();
         this.gestionVentes = gestionVentes;
@@ -54,7 +61,10 @@ public class FenetreProfilVendeur extends BorderPane {
         this.setPadding(new Insets(10, 50, 10, 10));// top - right - bottom - left
         
     }
-
+    /**
+     * Méthode qui ajoute le haut de la page avec les chemins vers les autres pages
+     * @param bd
+     */
     public void ajouteTop(BorderPane bd) {
         HBox hb = new HBox();
 
@@ -68,7 +78,10 @@ public class FenetreProfilVendeur extends BorderPane {
         hb.setAlignment(Pos.CENTER_LEFT);
         bd.setTop(hb);
     }
-
+    /**
+     * Méthode qui ajoute la partie droite de la page
+     * @param bd
+     */
     public void ajouteDroite(BorderPane bd) {
         VBox vb = new VBox();
         vb.setSpacing(20);
@@ -96,7 +109,11 @@ public class FenetreProfilVendeur extends BorderPane {
         }
         bd.setRight(vb);
     }
-
+    /**
+     * Méthode qui permet de générer des boite contenant les informations sur les ventes
+     * @param vente
+     * @return
+     */
     public GridPane boiteDroite(Vente vente) {
         // Création de la GridPane
         GridPane gp = new GridPane();
@@ -135,14 +152,20 @@ public class FenetreProfilVendeur extends BorderPane {
 
         return gp;
     }
-
+    /**
+     * Méthode qui ajoute la partie centrale de la page
+     * @param bd
+     */
     public void ajouteCentre(BorderPane bd) {
         HBox hb = new HBox();
         hb.setAlignment(Pos.CENTER);
         hb.getChildren().addAll(description(), infosProfil());
         bd.setCenter(hb);
     }
-
+    /**
+     * Méthode qui ajoute la description du profil
+     * @return VBox
+     */
     public VBox description() {
         VBox vb = new VBox();
 
@@ -171,7 +194,10 @@ public class FenetreProfilVendeur extends BorderPane {
         vb.getChildren().addAll(titre, type, description, contenuDescription);
         return vb;
     }
-
+    /**
+     * Méthode qui ajoute les informations du profil
+     * @return VBox
+     */
     public VBox infosProfil() {
         VBox vb = new VBox();
 
@@ -201,6 +227,10 @@ public class FenetreProfilVendeur extends BorderPane {
         vb.setAlignment(Pos.TOP_CENTER);
         return vb;
     }
+    /**
+     * Méthode qui ajoute le bouton voir plus
+     * @param bd
+     */
     public HBox ajouteVoirPLus(){
         HBox hb = new HBox();
         Label troispoint = new Label("...");
@@ -212,6 +242,10 @@ public class FenetreProfilVendeur extends BorderPane {
         hb.setPadding(new Insets(-20, 0, 0, 0));// top - right - bottom - left
         return hb;
     }
+    /**
+     * Créer un popUp qui affiche les informations de l'utilisateur
+     * @return
+     */
     public Alert popUpInfosProfil(){
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Informations Utilisateurs");

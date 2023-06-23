@@ -12,13 +12,19 @@ import Modele.Utilisateur;
 public class ConnexionUtilisateur {
     private Utilisateur user;
     private Connection connection;
-
+    /**
+     * Constructeur de la classe ConnexionUtilisateur
+     * @param u
+     * @param c
+     */
     public ConnexionUtilisateur(Utilisateur u, Connection c){
         this.user=u;
         this.connection=c;
     }
-
-
+    /**
+     * Méthode qui permet de vérifier si l'utilisateur est bien dans la base de données
+     * @return
+     */
     public boolean connexionUtilisateur() {
         if (this.connection == null) {
             System.out.println("La connexion à la base de données n'est pas établie");
@@ -44,7 +50,10 @@ public class ConnexionUtilisateur {
 
         return false;
     }
-
+    /**
+     * Méthode qui permet de vérifier si l'administrateur est bien dans la base de données
+     * @return
+     */
     public boolean connexionAdmin() {
         if (this.connection == null) {
             System.out.println("La connexion à la base de données n'est pas établie");
@@ -70,7 +79,10 @@ public class ConnexionUtilisateur {
 
         return false;
     }
-
+    /**
+     * Méthode qui permet de vérifier si les données sont vide
+     * @return boolean
+     */
     public boolean checkDonnéeVide(){
         if(user.getUsername().isEmpty() || user.getPassword().isEmpty()){
             return true;

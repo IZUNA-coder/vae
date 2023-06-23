@@ -9,6 +9,13 @@
             "name": "AppliVAE",
             "request": "launch",
             "mainClass": "Vue.AppliVAE",
+            "projectName": "Code_91b5b427"
+        },
+        {
+            "type": "java",
+            "name": "AppliVAE",
+            "request": "launch",
+            "mainClass": "Vue.AppliVAE",
             "projectName": "Code_944d970c"
         },
         {

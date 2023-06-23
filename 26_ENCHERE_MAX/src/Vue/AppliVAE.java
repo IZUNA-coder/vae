@@ -180,7 +180,13 @@ public class AppliVAE extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    /**
+     * Permet d'afficher les popUp d'erreur
+     * @param error
+     * @param titre
+     * @param text
+     * @param autreText
+     */
     public void afficherPopUpErreur(boolean error, String titre, String text, String autreText){
         // Afficher une alerte en cas d'échec de connexion
         Alert alert;
@@ -193,7 +199,12 @@ public class AppliVAE extends Application {
         alert.setContentText(autreText);
         alert.showAndWait();
     }
-
+    /**
+     * Permet d'afficher les popUp de confirmation
+     * @param headerText
+     * @param contentText
+     * @return
+     */
     public boolean confirmationPopUp(String headerText, String contentText) {
         // Créer une alerte de confirmation
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -207,11 +218,16 @@ public class AppliVAE extends Application {
         // Vérifier si l'utilisateur a cliqué sur le bouton OK
         return result.isPresent() && result.get() == ButtonType.OK;
     }
-
+    /**
+     * Permet de routourner la connexion
+     * @return Connexion
+     */
     public Connection getConnection(){
         return this.connection.getConnection();
     }
-
+    /**
+     * Affiche un chargement
+     */
     public void afficherChargement() {
         // Créer une boîte de dialogue modale
         Alert loadingDialog = new Alert(Alert.AlertType.INFORMATION);
@@ -518,7 +534,9 @@ public class AppliVAE extends Application {
                 this.btnConnexion.requestFocus();
             });
         }
-        
+        /**
+         * Affiche la fenêtre de connexion
+         */
         public void afficheFenetreConnexion() {
             // Affichage de la première fenêtre de connexion
             this.username = new TextField("");
@@ -548,7 +566,9 @@ public class AppliVAE extends Application {
 
             
         }
-        
+        /**
+         * Affiche la fenêtre d'inscription
+         */
         public void afficheFenetreInscription() {
             // Affichage de la fenêtre d'inscription
             this.username2 = new TextField("");
@@ -572,31 +592,38 @@ public class AppliVAE extends Application {
                 this.btnCreerCompte.requestFocus();
             });
         }
-        
         public void afficheFenetreTest() {
             // Affichage de la fenêtre de test (accueil)
             Pane root = new FenetreTest(this.btnDeconnexion,this.utilisateur,this.profilVendeur);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche la fenêtre d'accueil
+         */
         public void afficheFenetreAccueil(){
             // Affichage de la fenêtre d'accueil
             Pane root = new FenetreAccueil(this.listeRandomVentes,this.enchereBd,this,this.utilisateur,this.btnVAE,this.btnProfil,this.photoBD,this.btnVendre);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche fenetre admin
+         */
         public void afficheFenetreAdmin() {
             // Affichage de la fenêtre d'accueil
             Pane root = new FenetreAdmin(this.btnDeconnexion,this.btnGestionUsers,this.btnGestionSignalements,btnGestionVentes,btnGestioContrats,btnGestionEntreprise,btnGestionParamètres);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche la fenetre vente
+         */
         public void afficheFenetreVente() {
             // Affichage de la fenêtre d'accueil
             Pane root = new FenetreVente(this.btnRetour,this.btnVAE,this.btnProfil, this);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche la fenetre gestion des utilisateurs
+         */
         public void afficheFenetreGestionUsers() {
             this.table = new TableView<>();
             this.table.setOnMouseClicked(new ControllerLastUserSelected(this, table));
@@ -629,7 +656,9 @@ public class AppliVAE extends Application {
             Pane root = new FenetreGestionSignalements(this.btnDeconnexion,this.btnRetourAdmin);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche la fenetre gestion des ventes
+         */
         public void afficheFenetreGestionVentes() {
             this.btnDeleteVente = new Button("Supprimer la vente");
             this.btnDeleteVente.setOnAction(new ControllerBtnDeleteVente(this, gestionVentes));
@@ -656,22 +685,31 @@ public class AppliVAE extends Application {
             Pane root = new FenetreGestionVentes(this.btnDeconnexion,this.btnRetourAdmin,this.tfSearchVente,this.btnSearchVente,this.tableVentes,this.gestionVentes,this.btnDeleteVente,this.btnRefreshVente,this.btnEditVente,this.btnAddVente);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche la fenetre gestion des contrats
+         */
         public void afficheFenetreGestionContrats() {
             Pane root = new FenetreGestionContrats(this.btnDeconnexion,this.btnRetourAdmin);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche la fenetre gestion des entreprises
+         */
         public void afficheFenetreGestionEntreprise() {
             Pane root = new FenetreGestionEntreprise(this.btnDeconnexion,this.btnRetourAdmin,this.lbNbTotUsers,this.lbNbUsersActif,this.lbNbUsersInactif);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche la fenetre gestion des parametres
+         */
         public void afficheFenetreGestionParametres() {
             Pane root = new FenetreGestionParametres(this.btnDeconnexion,this.btnRetourAdmin);
             this.scene.setRoot(root);
         }
-
+        /**
+         * affiche la fenetre recherche enchere
+         * @param newValue
+         */
         public void afficheFenetreRechercheEnchere(String newValue){
             this.rechercheBar = new TextField();
             Pane root = new FenetreRechercheEnchere(this,this.btnRetour, this.btnDeconnexion,this.gestionVentes,this.photoBD,rechercheBar,this.btnVendre,this.btnProfil,this.btnVAE,this.enchereBd);
@@ -680,12 +718,16 @@ public class AppliVAE extends Application {
             remettreLeFocusNavBar();
             
         }
-
+        /**
+         * Permet de faire la cible sur la nav bar
+         */
         public void remettreLeFocusNavBar(){
             this.rechercheBar.requestFocus();
             this.rechercheBar.positionCaret(this.rechercheBar.getText().length());
         }
-
+        /**
+         * Affiche la fenetre profil
+         */
         public void afficheFenetreProfil(){
             this.tfModifierPseudo.setText("");
             this.tfModifierMDP.setText("");
@@ -696,17 +738,27 @@ public class AppliVAE extends Application {
             Pane root = new FenetreProfil(this.btnVAE, this.tfModifierPseudo, this.tfModifierMDP, this.tfModifierMail, this.btnModifierPseudo, this.btnModifierMDP, this.btnModifierMail, this.btnSupprimerCompte, this.btnDeconnexion);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche la fenetre encherir
+         * @param v
+         */
         public void afficheFenetreEncherir(Vente v){
             Pane root= new FenetreObjAVendre(this,this.gestionVentes, v, this.btnRetour, this.enchereBd, this.photoBD, this.hyperlinkProfile);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche la fenetre objet
+         * @param v
+         */
         public void afficheFentreObjet(Vente v){
             Pane root= new FenetreObjet(this.btnProfil, this.btnRetour, this.btnEncherir, this.hyperlinkProfile, v,  this.enchereBd, this.photoBD,this.gestionVentes,this.btnVAE,this);
             this.scene.setRoot(root);
         }
-
+        /**
+         * Affiche un pop up pour supprimer 
+         * @param userSelected
+         * @return
+         */
         public boolean afficherPopUpSupprimerUser(Utilisateur userSelected){
             // Afficher une alerte de confirmation
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -731,7 +783,9 @@ public class AppliVAE extends Application {
             // Vérifier si l'utilisateur a cliqué sur le bouton OK
             return result.isPresent() && result.get() == ButtonType.OK;
         }
-
+        /**+
+         * Affiche les pop up pour supprimer une vente
+         */
         public boolean afficherPopUpSupprimerVente(Vente venteSelected){
             // Afficher une alerte de confirmation
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -760,7 +814,11 @@ public class AppliVAE extends Application {
             // Vérifier si l'utilisateur a cliqué sur le bouton OK
             return result.isPresent() && result.get() == ButtonType.OK;
         }
-
+        /**
+         * Affiche la fenetre edit user
+         * @param userSelected
+         * @return
+         */
         public boolean afficheFenetreEditUser(Utilisateur userSelected) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initOwner(stage);
@@ -827,7 +885,10 @@ public class AppliVAE extends Application {
             return result.isPresent() && result.get() == ButtonType.OK;
 
         }
-
+        /**
+         * Permet d'afficher la fenetre pour ajouter un utilisateur
+         * @return
+         */
         public boolean afficheFenetreAddUser() {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initOwner(stage);
@@ -877,15 +938,24 @@ public class AppliVAE extends Application {
             // Vérifier si l'utilisateur a cliqué sur le bouton OK
             return result.isPresent() && result.get() == ButtonType.OK;
         }
-
+        /**
+         * Permet de retourner l'utilisateur qui a été ajouté
+         * @return String
+         */
         public String getAddUsername(){
             return this.tfAddUsername.getText().toString();
         }
-
+        /**
+         * Permet de retourner l'email qui a été ajouté
+         * @return String
+         */
         public String getAddEmail(){
             return this.tfAddEmail.getText().toString();
         }
-
+        /**
+         * Permet de retourner le role qui a été ajouté
+         * @return Role
+         */
         public Role getAddRole(){
             if(this.cbAddRole.getValue().toString().equals("Administrateur")){
                 return new Role("Administrateur");
@@ -958,15 +1028,19 @@ public class AppliVAE extends Application {
         public void setVentesTable(ObservableList<Vente> ventes){
             this.tableVentes.setItems(ventes);
         }
-
+        /**
+         * Permet d'effacer la table
+         */
         public void effacerTable(){
             this.table.getItems().clear();
         }
-
+        
         public Utilisateur getLastUserSelected(){
             return this.dernierUserSelected;
         }
-
+        /**
+         * Permet de réinitialiser le dernier utilisateur sélectionné
+         */
         public void resetLastUserSelected(){
             this.dernierUserSelected=null;
         }
@@ -974,11 +1048,16 @@ public class AppliVAE extends Application {
         public Vente getLastVenteSelected(){
             return this.dernierVenteSelected;
         }
-
+        /**
+         * Permet de réinitialiser la dernière vente sélectionnée
+         */
         public void resetLastVenteSelected(){
             this.dernierVenteSelected=null;
         }
-        
+        /**
+         * Permet de mettre à jour le dernier utilisateur sélectionné
+         * @param selectedUser
+         */
         public void updateLastSelectedUser(Utilisateur selectedUser) {
             this.dernierUserSelected=new Utilisateur();
             this.dernierUserSelected.setId(selectedUser.getId());
@@ -989,7 +1068,10 @@ public class AppliVAE extends Application {
             this.dernierUserSelected.setRole(selectedUser.getRole());
             System.out.println(this.dernierUserSelected.getId());
         }
-
+        /**
+         * Permet de mettre à jour la dernière vente sélectionnée
+         * @param selectedVente
+         */
         public void updateLastSelectedVente(Vente selectedVente) {
             this.dernierVenteSelected=new Vente(selectedVente.getIdentifiant(),selectedVente.getPrixBase(),selectedVente.getPrixMin(),selectedVente.getDebutVente(),selectedVente.getFinVente(),selectedVente.getStatut(),selectedVente.getObjet());
             System.out.println(this.dernierVenteSelected.getIdentifiant());
@@ -999,7 +1081,10 @@ public class AppliVAE extends Application {
             return this.listUtilisateursRecherchés;
         }
 
-        // pour mettre un bouton dans une colonne, ici pour isActif.
+        /**
+         * Permet de mettre à jour la liste des utilisateurs recherchés
+         * @param col
+         */
         public void setTableButtonAction(TableColumn<Utilisateur, Boolean> col) {
             col.setCellFactory(new Callback<TableColumn<Utilisateur, Boolean>, TableCell<Utilisateur, Boolean>>() {
                 @Override
@@ -1030,25 +1115,39 @@ public class AppliVAE extends Application {
             });
         }
 
-        // Gestion Entreprise
+        /**
+         * Permet de mettre à jour le label du nombre d'utilisateurs
+         * @param nbTot
+         * @param nbActifs
+         * @param nbInactifs
+         */
         public void setNbUserLabel(String nbTot,String nbActifs,String nbInactifs){
             this.lbNbTotUsers.setText(nbTot);
             this.lbNbUsersActif.setText(nbActifs);
             this.lbNbUsersInactif.setText(nbInactifs);
         }
-        
+        /**
+         * Permet de mettre a jour le label du nombre de ventes
+         * @param nbTotVentes
+         * @param nbVentesValidee
+         * @param nbVentesNonConclus
+         */
         public void setNbVentesLabel(String nbTotVentes, String nbVentesValidee, String nbVentesNonConclus) {
             this.lbNbTotVentes.setText(nbTotVentes);
             this.lbNbVentesValidée.setText(nbVentesValidee);
             this.lbNbVentesNonConclus.setText(nbVentesNonConclus);
         }
-
+        /**
+         * Permet d'afficher la fenetre profils vendeur
+         */
         public void afficheFenetreProfilVendeur(){
             Pane root = new FenetreProfilVendeur(this.hyperlinkAccueil,this.btnRetour,this.vendeur,this.photoBD,this.gestionVentes);
             this.scene.setRoot(root);
         }
-
-
+        /**
+         * Permet de mettre a jour la recherche
+         * @param text
+         */
         public void setRecherche(String text) {
             this.recherche=text;
         }
@@ -1077,7 +1176,9 @@ public class AppliVAE extends Application {
         public List<Enchere> getListEncheres() {
             return this.listEncheres;
         }
-
+        /**
+         * Permet de charger les données au lancement de l'application
+         */
         public void chargerDonnees(){
             try {
                 this.listVentes = gestionVentes.getVente();
@@ -1133,7 +1234,11 @@ public class AppliVAE extends Application {
         public String getVenteEditNomObj() {
             return tfVenteEditNomObj.getText().toString();
         }
-
+        /**
+         * Permet d'afficher la fenetre pour l'edition de la vente
+         * @param venteSelected
+         * @return
+         */
         public boolean afficheFenetreEditVente(Vente venteSelected) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initOwner(stage);
@@ -1231,7 +1336,18 @@ public class AppliVAE extends Application {
         public EnchereBd getEnchereBd() {
             return this.enchereBd;
         }
-
+        /**
+         * Permet de creer une vente
+         * @param nom
+         * @param prixDeBase
+         * @param prixMinimum
+         * @param dateDebut
+         * @param dateFin
+         * @param descriptionObjet
+         * @param imagePath
+         * @param categorie
+         * @param statut
+         */
         public void creationVente(String nom, Double prixDeBase, Double prixMinimum, LocalDate dateDebut, LocalDate dateFin, String descriptionObjet, String imagePath, int categorie, int statut){
 
 

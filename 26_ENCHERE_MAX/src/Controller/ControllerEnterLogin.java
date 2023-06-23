@@ -28,6 +28,7 @@ public class ControllerEnterLogin implements EventHandler<KeyEvent>{
             // teste si login fonctionnel , si oui afficher Accueil
             String username = appli.getUsername();
             String password = appli.getPassword();
+            this.appli.setUser(connexionUtilisateur.getUser(username));
 
             System.out.println(password);
 
@@ -36,7 +37,6 @@ public class ControllerEnterLogin implements EventHandler<KeyEvent>{
             if(!connexionUtilisateur.checkDonnéeVide()){
                 if(connexionUtilisateur.connexionUtilisateur()){
                     System.out.println("Connexion réussie (user)");
-                    this.appli.setUser(connexionUtilisateur.getUser(username));
                     this.appli.afficherChargement();
                     this.appli.chargerDonnees();
                     this.appli.afficheFenetreAccueil();

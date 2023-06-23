@@ -9,12 +9,18 @@ public class Statut {
         this.idSt = idSt;
         this.nom = nom;
     }
-
+    /**
+     * Constructeur de la classe Statut
+     * @param idSt
+     */
     public Statut(int idSt) {
         this.idSt = idSt;
         this.nom = NOMSTATUT_STRINGS[idSt-1];
     }
-
+    /**
+     * Constructeur de la classe Statut
+     * @param nom
+     */
     public Statut(String nom) {
         this.nom = nom;
         this.idSt = getIdStatut(nom);

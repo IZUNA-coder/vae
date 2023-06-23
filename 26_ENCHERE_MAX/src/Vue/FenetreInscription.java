@@ -24,7 +24,16 @@ public class FenetreInscription extends BorderPane {
     private PasswordField password;
     private PasswordField confirmPassword;
     private Button btnQuitter;
-    
+    /**
+     * Constructeur de la fenêtre d'inscription
+     * @param bouton
+     * @param sInscrire
+     * @param id2
+     * @param email
+     * @param password2
+     * @param confirmPassword
+     * @param btnQuitter
+     */
     public FenetreInscription(Button bouton, Button sInscrire,TextField id2,TextField email,PasswordField password2,PasswordField confirmPassword,Button btnQuitter){
         super();
         this.id =id2;
@@ -38,7 +47,10 @@ public class FenetreInscription extends BorderPane {
         this.setCenter(this.center());
     }
     
-    
+    /**
+     * Méthode qui retourne le centre de la fenêtre d'inscription
+     * @return VBox
+     */
     private VBox center() {
         VBox vb = new VBox();
         this.setId("fenetreInscription");
